@@ -16,6 +16,6 @@ export const interBold = Inter({
 })
 
 export const titleFont = Montserrat_Alternates({
-    weight:['300'],
+    weight:['300', '700'],
     subsets:['latin']
 })
