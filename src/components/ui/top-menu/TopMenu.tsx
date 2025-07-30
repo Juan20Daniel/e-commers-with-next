@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const TopMenu = () => {
   return (
-    <nav className='flex px-5 pt-2 justify-between items-center w-full'>
+    <nav className='flex px-5 pt-2 justify-between items-center w-full sticky top-0 bg-white z-2'>
       <div>
         <Link href="/">
           <span className={`${titleFont.className} antialiased font-bold`}>Teslo</span>
