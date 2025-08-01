@@ -1,18 +1,44 @@
 'use client'
-import Link from "next/link"
-import { IoCloseOutline, IoLogInOutline, IoLogOutOutline, IoPeopleOutline, IoPersonOutline, IoSearchOutline, IoShirtOutline, IoTicketOutline } from "react-icons/io5"
+import Link from "next/link";
+import { useUiStore } from "@/store";
+import { 
+  IoCloseOutline, 
+  IoLogInOutline, 
+  IoLogOutOutline, 
+  IoPeopleOutline, 
+  IoPersonOutline, 
+  IoSearchOutline, 
+  IoShirtOutline, 
+  IoTicketOutline 
+} from "react-icons/io5";
 
 export const SideMenu = () => {
+  const isSideMenuOpen = useUiStore(state => state.isSideMenuOpen);
+  const closeSideMenu = useUiStore(state => state.closeSideMenu);
   return (
-    <div className='fixed top-0 left-0 w-screen h-screen z-5 bg-[#0000003a]'>
-      <div className=' flex top-0 left-0 w-screen h-screen z-5 backdrop-blur-[2px]' />
-      <nav className='h-screen w-full max-w-md bg-white fixed top-0 right-0 p-5 transform transition-all duration-300'>
+    <>
+      {isSideMenuOpen && <div className='fixed top-0 left-0 w-screen h-screen z-5 bg-[#0000003a]' />}
+      {isSideMenuOpen && <div onClick={closeSideMenu} className='fixed flex top-0 left-0 w-screen h-screen z-5 backdrop-blur-[2px]' />}
+      <nav className={`
+        h-screen w-full 
+        max-w-md 
+        bg-white 
+        fixed 
+        top-0 
+        right-0 
+        p-5 
+        transform 
+        transition-all 
+        duration-300 
+        z-10 
+        ${!isSideMenuOpen && 'translate-x-full'}
+      `}>
         <IoCloseOutline
           title="Cerrar"
           size={30}
           color="black"
           className="absolute right-5 cursor-pointer active:opacity-55 transition-all"
-          onClick={() => console.log('clic')}
+          onClick={() => closeSideMenu()}
         />
         <div className="relative mt-14 pb-5">
           <IoSearchOutline size={20} className="absolute top-2 left-2" />
@@ -73,6 +99,6 @@ export const SideMenu = () => {
           <span className="text-md">Usuarios</span>
         </Link>
       </nav>
-    </div>
+    </>
   )
 }
