@@ -1,11 +1,13 @@
 'use client'
+import Link from 'next/link';
 import { titleFont } from '@/config/fonts';
 import { IoCartOutline, IoMenuOutline, IoSearchOutline } from 'react-icons/io5';
-import Link from 'next/link';
 import { useUiStore } from '@/store';
+import { CategoryOption } from './CategoryOption';
 
 export const TopMenu = () => {
   const opemSideMenu = useUiStore(state => state.openSideMenu);
+
   return (
     <nav className='flex px-5 pt-2 justify-between items-center w-full sticky top-0 bg-white z-2'>
       <div>
@@ -15,9 +17,9 @@ export const TopMenu = () => {
         </Link>
       </div>
       <div className='hidden sm:block'>
-        <Link className='ml-2 mr-2 p-2 rounded-md transition-all hover:bg-gray-100' href="/category/men">Hombres</Link>
-        <Link className='ml-2 mr-2 p-2 rounded-md transition-all hover:bg-gray-100' href="/category/women">Mujeres</Link>
-        <Link className='ml-2 mr-2 p-2 rounded-md transition-all hover:bg-gray-100' href="/category/kids">Niños</Link>
+        <CategoryOption text='Hombres' category='men' />
+        <CategoryOption text='Mujeres' category='women' />
+        <CategoryOption text='Niños' category='kid' />
       </div>
       <div className='flex items-center'>
         <Link href="/search" className='ml-2 mr-2 p-2 transition-all hover:bg-gray-100 active:bg-gray-300 rounded-md'>
