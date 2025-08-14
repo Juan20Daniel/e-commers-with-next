@@ -23,7 +23,6 @@ export const SizeSelector = ({defaultSize, availableSizes=[]}:Props) => {
         });
         setSizes(result);
     },[]);
-
     const selectSize = (name:string) => {
         const sizes_copy = [...sizes];
         const result = sizes_copy.map(size => size.size === name 
@@ -36,7 +35,7 @@ export const SizeSelector = ({defaultSize, availableSizes=[]}:Props) => {
     return (
         <>
             <p className="font-bold text-sm mb-2">Tallas disponibles</p>
-            <div className='flex flex-row mb-1 gap-2'>
+            <div className='flex flex-row flex-wrap mb-5 gap-2'>
                 {sizes.map(({size, isSelect}) => (
                     <button
                         onClick={() => selectSize(size)}
@@ -44,9 +43,11 @@ export const SizeSelector = ({defaultSize, availableSizes=[]}:Props) => {
                         key={size}
                     >
                         {size}
-                        <div className='absolute bottom-1 left-0 w-full flex justify-center'>
-                            <div className={`transition-all bg-gray-700 rounded-2xl w-[20px] h-[4px] opacity-${isSelect ? 1 : 0}`} />
-                        </div>
+                        {isSelect &&
+                            <div className='absolute bottom-1 left-0 w-full flex justify-center'>
+                                <div className={`transition-all bg-gray-700 rounded-2xl w-[20px] h-[4px]`} />
+                            </div>
+                        }
                     </button>
                 ))}
             </div>

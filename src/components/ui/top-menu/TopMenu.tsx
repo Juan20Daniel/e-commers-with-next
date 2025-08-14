@@ -9,7 +9,7 @@ export const TopMenu = () => {
   const opemSideMenu = useUiStore(state => state.openSideMenu);
 
   return (
-    <nav className='flex px-5 pt-2 justify-between items-center w-full sticky top-0 bg-white z-2'>
+    <nav className='flex px-5 pt-2 justify-between h-[60px] items-center w-full sticky top-0 bg-white z-2'>
       <div>
         <Link href="/">
           <span className={`${titleFont.className} antialiased font-bold`}>Teslo</span>
