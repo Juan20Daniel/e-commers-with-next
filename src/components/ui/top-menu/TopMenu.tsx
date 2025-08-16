@@ -4,12 +4,14 @@ import { titleFont } from '@/config/fonts';
 import { IoCartOutline, IoMenuOutline, IoSearchOutline } from 'react-icons/io5';
 import { useUiStore } from '@/store';
 import { CategoryOption } from './CategoryOption';
+import { useContext } from 'react';
+import { ScrollContext } from '@/context/ScrollContext';
 
 export const TopMenu = () => {
   const opemSideMenu = useUiStore(state => state.openSideMenu);
-
+  const isScrolling = useContext(ScrollContext)?.isScrolling;
   return (
-    <nav className='flex px-5 pt-2 justify-between h-[60px] items-center w-full sticky top-0 bg-white z-2'>
+    <nav className={`${isScrolling ? "border-gray-200" : "border-white"} border-b-1 flex px-5 pt-2 justify-between h-[60px] items-center w-full sticky top-0 bg-white z-2`}>
       <div>
         <Link href="/">
           <span className={`${titleFont.className} antialiased font-bold`}>Teslo</span>

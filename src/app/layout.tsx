@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { interLight } from "@/config/fonts";
+import { ScrollProvider } from "@/context/ScrollContext";
 import "./globals.css";
 
 
@@ -18,7 +19,9 @@ export default function RootLayout({
       <body
         className={`${interLight.className} antialiased`}
       >
-        {children}
+        <ScrollProvider>
+          {children}
+        </ScrollProvider>
       </body>
     </html>
   );

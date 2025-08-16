@@ -1,5 +1,4 @@
 import { Product } from '@/interfaces/product.interface'
-import React from 'react'
 import { ProductGridItem } from './ProductGridItem';
 
 interface Props {
