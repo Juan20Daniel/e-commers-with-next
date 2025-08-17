@@ -5,12 +5,15 @@ import {
   IoCloseOutline, 
   IoLogInOutline, 
   IoLogOutOutline, 
+  IoManOutline, 
   IoPeopleOutline, 
   IoPersonOutline, 
   IoSearchOutline, 
   IoShirtOutline, 
-  IoTicketOutline 
+  IoTicketOutline, 
+  IoWomanOutline
 } from "react-icons/io5";
+import { LiaChildSolid } from "react-icons/lia";
 
 export const SideMenu = () => {
   const isSideMenuOpen = useUiStore(state => state.isSideMenuOpen);
@@ -19,20 +22,7 @@ export const SideMenu = () => {
     <>
       {isSideMenuOpen && <div className='fixed top-0 left-0 w-screen h-screen z-5 bg-[#0000003a]' />}
       {isSideMenuOpen && <div onClick={closeSideMenu} className='fixed flex top-0 left-0 w-screen h-screen z-5 backdrop-blur-[2px]' />}
-      <nav className={`
-        h-screen w-full 
-        max-w-md 
-        bg-white 
-        fixed 
-        top-0 
-        right-0 
-        p-5 
-        transform 
-        transition-all 
-        duration-300 
-        z-10 
-        ${!isSideMenuOpen && 'translate-x-full'}
-      `}>
+      <nav className={`h-screen w-full max-w-md bg-white fixed top-0 right-0 p-5 transform transition-all duration-300 z-10 ${!isSideMenuOpen && 'translate-x-full'}`}>
         <IoCloseOutline
           title="Cerrar"
           size={30}
@@ -82,8 +72,33 @@ export const SideMenu = () => {
           className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
         >
           <IoShirtOutline size={20} />
-          <span className="text-md">Productos</span>
+          <span className="text-md">Todos los productos</span>
         </Link>
+         
+          <div className="sm:hidden">
+            <Link 
+              href="/category/men"
+              className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
+            >
+              <IoManOutline size={20} />
+              <span className="text-md">Hombres</span>
+            </Link>
+            <Link 
+              href="/category/women"
+              className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
+            >
+              <IoWomanOutline size={20} />
+              <span className="text-md">Mujeres</span>
+            </Link>
+            <Link 
+              href="/category/kid"
+              className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
+            >
+              <LiaChildSolid size={20} />
+              <span className="text-md">Niños</span>
+            </Link>
+          </div>
+        
         <Link 
           href="/"
           className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
