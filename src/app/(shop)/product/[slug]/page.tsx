@@ -26,7 +26,10 @@ export default async function ProductPage({params}:Props) {
         <h1 className={`${titleFont.className} text-xl font-bold 2xl:text-2xl`}>{product.title}</h1>
         <p className="text-lg mb-5">${product.price}</p>
         <SizeSelector availableSizes={product.sizes} defaultSize="S" />
-        <QuantitySelector />
+        <p className="font-bold text-sm mb-2">Cantidad</p>
+        <div className="h-[40px]">
+          <QuantitySelector />
+        </div>
         <button className="btn-primary my-5 cursor-pointer">
           Agregar al carrito
         </button>

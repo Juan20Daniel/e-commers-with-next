@@ -1,8 +1,4 @@
 @import "tailwindcss";
-/* @reference "tailwindcss";
-@import "tailwindcss/preflight"
-@tailwind utilities;
-} */
 
 :root {
   --primary: #274494;

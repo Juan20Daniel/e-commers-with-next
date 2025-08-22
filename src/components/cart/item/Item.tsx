@@ -1,3 +1,4 @@
+import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
 import Image from "next/image";
 
 
@@ -14,8 +15,8 @@ export const Item = () => {
                     className="shadow-[0px_0px_2px_rgba(0,0,0,0.3)] rounded-2xl w-full"
                 />
                 <div className="absolute bottom-[-9px] w-full flex justify-center">
-                    <button className=" bg-red-900 text-white text-[8px] px-2 py-1 rounded-3xl cursor-pointer active:bg-red-700 sm:text-[10px] sm:px-3">
-                        Eliminar
+                    <button className=" bg-white text-black border-[1px] border-gray-300 text-[8px] px-2 py-1 rounded-3xl cursor-pointer hover:bg-red-800 active:bg-red-500 hover:text-white transition-all sm:text-[10px] sm:px-3">
+                        Remover
                     </button>
                 </div>
             </div>
@@ -27,7 +28,10 @@ export const Item = () => {
                     <span className="text-[12px] font-bold ml-2 min-w-[65px] truncate sm:text-[14px] sm:min-w-[75px] xl:mr-10 xl:text-[15px]">$459900.00</span>
                 </div>
                 <span className="text-[10px] sm:text-[12px] xl:text-[13px]">Burgundy, L</span>
-                <span className="text-[10px] sm:text-[12px] xl:text-[13px]">Cantidad: 1</span>
+                <div className="h-[19px] flex gap-3">
+                    <span className="text-[10px] sm:text-[12px] xl:text-[13px]">Cantidad: 1</span>
+                    <QuantitySelector />
+                </div>
             </div>
         </div>
     );
