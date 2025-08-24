@@ -17,41 +17,46 @@ export const initialState:FormState = {
         lastname: '',
         address: '',
         opAddress: '',
-        postalCode: null,
-        city: '',
-        country: '',
-        phone: null
-    },
-    errors: {
-        fullname: '',
-        lastname: '',
-        address: '',
-        opAddress: '',
         postalCode: '',
         city: '',
         country: '',
         phone: ''
+    },
+    errors: {
+        fullname: null,   
+        lastname: null,
+        address: null,
+        opAddress: null,
+        postalCode: null,
+        city: null,
+        country: null,
+        phone: null
     }
-}
-
-const validValues = (value:string|number, field:string|number) => {
-    
-    console.log(expretions[field].test(String(value)));
-    
 }
 
 export const formReducer = (state:FormState, action:FormActionTypes) => {
     switch (action.type) {
         case "CHANGE_INPUT":
-            const {values} = state;
-            validValues(action.value, action.field);
             return {
-                ...values,
-                values: {
-                    ...values,
+                ...state,
+                values:{
+                    ...state.values,
                     [action.field]:action.value
                 }
             }
+        case "VALIDATE_INPUTS": 
+            const errors = { ...state.errors };
+
+            (Object.keys(state.values) as (keyof typeof state.values)[]).forEach(key => {
+                if(state.values[key] === '') {
+                    errors[key] = 'empty'
+                } else {
+                    const fieldValue = state.values[key]??''
+                    const ckeckValue = expretions[key].test(fieldValue.toString());
+                    errors![key] = ckeckValue ? 'valid' : 'invalid'
+                }
+            });
+            return {...state, errors};
         case "RESET":
             return initialState;
         default:

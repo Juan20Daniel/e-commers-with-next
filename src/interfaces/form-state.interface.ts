@@ -3,20 +3,22 @@ export interface FormState {
         fullname: string;   
         lastname: string;
         address: string;
-        opAddress?: string;
-        postalCode: number|null;
+        opAddress: string;
+        postalCode: string;
         city: string;
         country: string;
-        phone: number|null;
+        phone: string;
     },
-    errors?: {
-        fullname?: string;   
-        lastname?: string;
-        address?: string;
-        opAddress?: string;
-        postalCode?: string;
-        city?: string;
-        country?: string;
-        phone?: string;
+    errors: {
+        fullname: InputError;   
+        lastname: InputError;
+        address: InputError;
+        opAddress: InputError;
+        postalCode: InputError;
+        city: InputError;
+        country: InputError;
+        phone: InputError;
     }
 }
+export type InputError = null|'empty'|'valid'|'invalid';
+   

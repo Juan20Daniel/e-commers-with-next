@@ -1,23 +1,32 @@
 import { HTMLInputTypeAttribute } from "react";
 import { IoClose } from "react-icons/io5";
-
+import { InputError } from "@/interfaces/form-state.interface";
+import './styles.css';
 interface Props {
     id:string;
     label:string;
-    type: HTMLInputTypeAttribute | undefined;
-    value:string|number|undefined;
+    type:HTMLInputTypeAttribute | undefined;
+    value:string;
+    max?:number;
+    errorMessage?: string;
     onChange: (event:React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Input = ({id,label,type,value,onChange}:Props) => {
+export const Input = ({id,label,type,value,max,errorMessage,onChange}:Props) => {
     return (
-        <div className="relative mt-[24px]  h-[42px]">
+        <div className="relative h-[66px]">
             <input 
                 id={id} 
                 name={id}
                 value={value}
-                type={type}
-                onChange={onChange}
+                type='text'
+                onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
+                    if(type!=='number') return onChange(event);
+                    if(!isNaN(Number(event.target.value))) {
+                        onChange(event);
+                    }
+                }}
+                maxLength={max}
                 placeholder=" " 
                 className="w-full py-2 pr-10 pl-4 rounded-md border-[1px] border-gray-400 peer outline-blue-600"
             />
@@ -27,9 +36,16 @@ export const Input = ({id,label,type,value,onChange}:Props) => {
             ">
                 {label}
             </label>
-            {false && <button className="absolute top-2 right-2 flex items-center justify-center rounded-3xl cursor-pointer w-[25px] h-[25px] transition-all bg-gray-300 active:bg-gray-100">
-                <IoClose className="h-[16px] w-[16px] text-black" />
-            </button>}
+            {(value !== '') && 
+                <button className="absolute top-2 right-2 flex items-center justify-center rounded-3xl cursor-pointer w-[25px] h-[25px] transition-all bg-gray-300 active:bg-gray-100">
+                    <IoClose className="h-[16px] w-[16px] text-black" />
+                </button>
+            }
+            <div className="h-[24px]">
+                {errorMessage && 
+                    <p>{errorMessage}</p>
+                }
+            </div>
         </div>
     )
 }

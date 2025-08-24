@@ -8,10 +8,11 @@ interface Props {
     options: Option[];
     label: string;
     defaultOption?:Option;
+    isRequired: boolean;
     setState: Dispatch<SetStateAction<Option>>;
 }
 
-export const Select = ({state, options:initialState,label,setState}:Props) => {
+export const Select = ({state, options:initialState,label,isRequired=false,setState}:Props) => {
     const [ options, setOptions ] = useState(initialState)
     const [ showOptions, setShowOptions ] = useState(false);
     const elementRef = useRef<HTMLDivElement|null>(null);
@@ -51,10 +52,10 @@ export const Select = ({state, options:initialState,label,setState}:Props) => {
         handleShowOptions();
     }
     return (
-        <div ref={elementRef} className='relative w-full h-[42px] mt-[24px] rounded-md'>
+        <div ref={elementRef} className='relative w-full h-[66px] rounded-md'>
             <button
                 onClick={handleShowOptions} 
-                className={`w-full h-full flex outline-blue-600 border-[1px] ${showOptions ? 'outline border-blue-600': 'border-gray-400'} items-center justify-between text-start px-4 rounded-md cursor-pointer`}
+                className={`w-full h-[42px] py-2 flex outline-blue-600 border-[1px] ${showOptions ? 'outline border-blue-600': 'border-gray-400'} items-center justify-between text-start px-4 rounded-md cursor-pointer`}
             >
                 <span className={`absolute left-4 top-[-15px] bg-white transition-all ${showOptions && 'text-blue-800'} ${(!showOptions && state.value === '') && 'translate-y-[24px]'}`}>{label}</span>
                 {state.value !== '' && <span>{state.value}</span>}
@@ -73,6 +74,11 @@ export const Select = ({state, options:initialState,label,setState}:Props) => {
                         </li>
                     ))}
                 </ul>
+            }
+            {isRequired && 
+                <div className="h-[24px]">
+                    <p>Este campo es requerido</p>
+                </div>
             }
         </div>
     );

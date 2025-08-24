@@ -1,6 +1,6 @@
 'use client'
 import Link from 'next/link';
-import { useReducer, useState, useEffect } from 'react';
+import { useReducer, useState, useEffect, FormEvent } from 'react';
 import { Input, Select, Title } from '@/components';
 import { Option } from '@/interfaces/select-option.interface';
 import { formReducer, initialState } from '@/reducers/formReducer';
@@ -35,26 +35,131 @@ export default function AddressPage() {
       value: select.value
     });
   }
+  const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch({
+      type:'VALIDATE_INPUTS'
+    });
+  }
   return (
     <>
       <div className="flex justify-center">
       <div className="w-full max-w-[1000px]">
         <Title title="Dirección" subTitle="Dirección de entrega" />
-        <div className="grid grid-cols-1 gap-2 px-4 pb-10 sm:gap-5 sm:grid-cols-2">
-          <Input id='fullname' label='Nombres' type='text' value={state.values.fullname} onChange={handleChange} />
-          <Input id='lastname' label='Apellidos' type='text' value={state.values.lastname} onChange={handleChange} />
-          <Input id='address' label='Dirección' type='text' value={state.values.address} onChange={handleChange} />
-          <Input id='opAddress' label='Dirección 2 (opcional)' type='text' value={state.values.opAddress} onChange={handleChange} />
-          <Input id='postalCode' label='Código postal' type='number' value={state.values.postalCode??undefined} onChange={handleChange} />
-          <Input id='city' label='Ciudad' value={state.values.city} type='text' onChange={handleChange} />
+        <form className="grid grid-cols-1 gap-2 px-4 pb-10 sm:gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
+          <Input 
+            id='fullname' 
+            label='Nombres' 
+            type='text'
+            errorMessage={
+              state.errors.fullname === 'empty' 
+                ? "El campo nombres es requerido"
+                : state.errors.fullname === 'invalid'
+                  ? 'El nombre no es válido'
+                  : undefined
+            }
+            value={state.values.fullname} 
+            onChange={handleChange} 
+          />
+          <Input 
+            id='lastname' 
+            label='Apellidos' 
+            type='text'
+            errorMessage={
+              state.errors.lastname === 'empty' 
+                ? "El campo apellidos es requerido"
+                : state.errors.lastname === 'invalid'
+                  ? 'El apellido no es válido'
+                  : undefined
+            }
+            value={state.values.lastname} 
+            onChange={handleChange} 
+          />
+          <Input 
+            id='address' 
+            label='Dirección' 
+            type='text'
+            errorMessage={
+              state.errors.address === 'empty' 
+                ? "El campo dirección es requerido"
+                : state.errors.address === 'invalid'
+                  ? 'La dirección no es válida'
+                  : undefined
+            }
+            value={state.values.address} 
+            onChange={handleChange} 
+          />
+          <Input 
+            id='opAddress' 
+            label='Dirección 2 (opcional)' 
+            type='text'
+            errorMessage={
+              state.errors.opAddress !== 'empty'
+                ? state.errors.opAddress === 'invalid'
+                    ? 'El campo dirección 2 no es válido'
+                    : undefined
+                : undefined
+            }
+            value={state.values.opAddress} 
+            onChange={handleChange} 
+          />
+          <Input 
+            id='postalCode' 
+            label='Código postal'
+            type='number'
+            max={5}
+            errorMessage={
+              state.errors.postalCode === 'empty' 
+                ? "El código postal es requerido"
+                : state.errors.postalCode === 'invalid'
+                  ? 'El campo código postal no es válido'
+                  : undefined
+            }
+            value={state.values.postalCode} 
+            onChange={handleChange}
+          />
+          <Input 
+            id='city' 
+            label='Ciudad' 
+            value={state.values.city} 
+            type='text'
+            errorMessage={
+              state.errors.city === 'empty' 
+                ? "La ciudad es requerida"
+                : state.errors.fullname === 'invalid'
+                  ? 'La ciudad no es válida'
+                  : undefined
+            }
+            onChange={handleChange} 
+          />
           <Select
             state={select}
             options={options}
             defaultOption={options[0]}
             label='País'
             setState={setSelect}
+            isRequired={
+              (state.errors.country !== null) &&
+                state.errors.country === 'empty'
+                  ? true 
+                  : false
+            }
           />
-          <Input id='phone' label='Teléfono' value={state.values.phone??undefined} type='number' onChange={handleChange} />
+          <Input 
+            id='phone' 
+            label='Teléfono' 
+            value={state.values.phone}
+            type='number'
+            max={10}
+            errorMessage={
+              state.errors.phone === 'empty' 
+                ? "El teléfono es requerido"
+                : state.errors.phone === 'invalid'
+                  ? 'El teléfono no es válido'
+                  : undefined
+            }
+            onChange={handleChange} 
+          />
           <div className="flex flex-col pt-10 gap-5 mb-2 sm:flex-row sm:justify-end sm:col-span-2">
             <Link 
               href='/cart'
@@ -62,17 +167,17 @@ export default function AddressPage() {
             >
               Átras
             </Link>
-            <Link
-              href='/checkout'
+            <button
+              type='submit'
               className="btn-primary flex w-full  sm:w-1/5 justify-center "
             >
               Siguiente
-            </Link>
+            </button>
           </div>
-        </div>
+        </form>
       </div>
     </div>
-    <p>{JSON.stringify(state.values, null, 2)}</p>
+   
     </>
   );
 }
