@@ -54,10 +54,28 @@ export const Select = ({state, options:initialState,label,isRequired=false,setSt
     return (
         <div ref={elementRef} className='relative w-full h-[66px] rounded-md'>
             <button
+                type='button'
                 onClick={handleShowOptions} 
-                className={`w-full h-[42px] py-2 flex outline-blue-600 border-[1px] ${showOptions ? 'outline border-blue-600': 'border-gray-400'} items-center justify-between text-start px-4 rounded-md cursor-pointer`}
+                className={`w-full h-[42px] py-2 flex outline-blue-600 border-[1px] items-center justify-between text-start px-4 rounded-md cursor-pointer
+                    ${showOptions 
+                        ? 'outline border-blue-600'
+                        : isRequired 
+                            ?   'border-red-700'
+                            :   'border-gray-400'
+                    }
+                `}
             >
-                <span className={`absolute left-4 top-[-15px] bg-white transition-all ${showOptions && 'text-blue-800'} ${(!showOptions && state.value === '') && 'translate-y-[24px]'}`}>{label}</span>
+                <span className={`absolute left-4 top-[-15px] bg-white transition-all
+                    ${(!showOptions && state.value === '') && 'translate-y-[24px]'}
+                    ${showOptions 
+                        ?   'text-blue-800'
+                        :   isRequired
+                            ?   'text-red-700'
+                            :   'text-gray-700'
+                    } 
+                `}>
+                    {label}
+                </span>
                 {state.value !== '' && <span>{state.value}</span>}
                 <IoChevronDown className='absolute right-3 top-[11px] w-[30px]' size={20} />
             </button>
@@ -68,7 +86,7 @@ export const Select = ({state, options:initialState,label,isRequired=false,setSt
                             key={option.id} 
                             className={`${option.isSelected && 'bg-gray-200'} cursor-pointer ${index===0 && 'rounded-tl-md rounded-tr-md'} ${index === options.length-1 && 'rounded-bl-md rounded-br-md'}  hover:bg-gray-100`}
                         >
-                            <button onClick={() => getOptionSelected(option)} className='cursor-pointer px-4 text-start py-2 w-full'>
+                            <button type='button' onClick={() => getOptionSelected(option)} className='cursor-pointer px-4 text-start py-2 w-full'>
                                 {option.value}
                             </button>
                         </li>
@@ -77,7 +95,7 @@ export const Select = ({state, options:initialState,label,isRequired=false,setSt
             }
             {isRequired && 
                 <div className="h-[24px]">
-                    <p>Este campo es requerido</p>
+                    <p className='text-red-700'>Este campo es requerido</p>
                 </div>
             }
         </div>

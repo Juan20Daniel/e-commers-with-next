@@ -4,6 +4,7 @@ import { useReducer, useState, useEffect, FormEvent } from 'react';
 import { Input, Select, Title } from '@/components';
 import { Option } from '@/interfaces/select-option.interface';
 import { formReducer, initialState } from '@/reducers/formReducer';
+import { useRouter } from 'next/navigation';
 
 const options:Option[] = [
   {id:1, value:'Monterrrey', isSelected:false},
@@ -18,6 +19,7 @@ const options:Option[] = [
 export default function AddressPage() {
   const [ state, dispatch ] = useReducer(formReducer, initialState);
   const [ select, setSelect ] = useState<Option>({id:1, value:'', isSelected:false});
+  const router = useRouter();
   useEffect(() => {
     handleSelect();
   },[select.value]);
@@ -40,68 +42,83 @@ export default function AddressPage() {
     dispatch({
       type:'VALIDATE_INPUTS'
     });
+    const formErrors = {...state.errors};
+    delete formErrors["opAddress"];
+    if(Object.values(formErrors).map(error => error.valid).includes(false)) {
+      return alert("Error en uno de los campos")
+    }
+    return router.push('/checkout');
+  }
+  const clearInput = (field:string) => {
+    dispatch({
+      type:'CLEAR_INPUT',
+      field:field
+    });
   }
   return (
-    <>
-      <div className="flex justify-center">
+    <div className="flex justify-center">
       <div className="w-full max-w-[1000px]">
         <Title title="Dirección" subTitle="Dirección de entrega" />
-        <form className="grid grid-cols-1 gap-2 px-4 pb-10 sm:gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
+        <form className="grid grid-cols-1 gap-4 px-4 pb-10 sm:gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
           <Input 
             id='fullname' 
             label='Nombres' 
             type='text'
             errorMessage={
-              state.errors.fullname === 'empty' 
+              state.errors.fullname.status === 'empty' 
                 ? "El campo nombres es requerido"
-                : state.errors.fullname === 'invalid'
+                : state.errors.fullname.status === 'invalid'
                   ? 'El nombre no es válido'
                   : undefined
             }
             value={state.values.fullname} 
-            onChange={handleChange} 
+            onChange={handleChange}
+            clearInput={clearInput}
           />
           <Input 
             id='lastname' 
             label='Apellidos' 
             type='text'
             errorMessage={
-              state.errors.lastname === 'empty' 
+              state.errors.lastname.status === 'empty' 
                 ? "El campo apellidos es requerido"
-                : state.errors.lastname === 'invalid'
+                : state.errors.lastname.status === 'invalid'
                   ? 'El apellido no es válido'
                   : undefined
             }
             value={state.values.lastname} 
-            onChange={handleChange} 
+            onChange={handleChange}
+            clearInput={clearInput}
           />
           <Input 
             id='address' 
             label='Dirección' 
             type='text'
             errorMessage={
-              state.errors.address === 'empty' 
+              state.errors.address.status === 'empty' 
                 ? "El campo dirección es requerido"
-                : state.errors.address === 'invalid'
+                : state.errors.address.status === 'invalid'
                   ? 'La dirección no es válida'
                   : undefined
             }
             value={state.values.address} 
-            onChange={handleChange} 
+            onChange={handleChange}
+            clearInput={clearInput}
           />
           <Input 
             id='opAddress' 
             label='Dirección 2 (opcional)' 
             type='text'
             errorMessage={
-              state.errors.opAddress !== 'empty'
-                ? state.errors.opAddress === 'invalid'
-                    ? 'El campo dirección 2 no es válido'
+              state.errors.opAddress.status !== 'empty'
+                ? state.errors.opAddress.status === 'invalid'
+                    ? 'La dirección 2 no es válida'
                     : undefined
                 : undefined
             }
             value={state.values.opAddress} 
-            onChange={handleChange} 
+            onChange={handleChange}
+            clearInput={clearInput}
           />
           <Input 
             id='postalCode' 
@@ -109,14 +126,15 @@ export default function AddressPage() {
             type='number'
             max={5}
             errorMessage={
-              state.errors.postalCode === 'empty' 
+              state.errors.postalCode.status === 'empty' 
                 ? "El código postal es requerido"
-                : state.errors.postalCode === 'invalid'
-                  ? 'El campo código postal no es válido'
+                : state.errors.postalCode.status === 'invalid'
+                  ? 'El código postal no es válido'
                   : undefined
             }
             value={state.values.postalCode} 
             onChange={handleChange}
+            clearInput={clearInput}
           />
           <Input 
             id='city' 
@@ -124,13 +142,14 @@ export default function AddressPage() {
             value={state.values.city} 
             type='text'
             errorMessage={
-              state.errors.city === 'empty' 
+              state.errors.city.status === 'empty' 
                 ? "La ciudad es requerida"
-                : state.errors.fullname === 'invalid'
+                : state.errors.fullname.status === 'invalid'
                   ? 'La ciudad no es válida'
                   : undefined
             }
-            onChange={handleChange} 
+            onChange={handleChange}
+            clearInput={clearInput}
           />
           <Select
             state={select}
@@ -140,7 +159,7 @@ export default function AddressPage() {
             setState={setSelect}
             isRequired={
               (state.errors.country !== null) &&
-                state.errors.country === 'empty'
+                state.errors.country.status === 'empty'
                   ? true 
                   : false
             }
@@ -152,15 +171,16 @@ export default function AddressPage() {
             type='number'
             max={10}
             errorMessage={
-              state.errors.phone === 'empty' 
+              state.errors.phone.status === 'empty' 
                 ? "El teléfono es requerido"
-                : state.errors.phone === 'invalid'
+                : state.errors.phone.status === 'invalid'
                   ? 'El teléfono no es válido'
                   : undefined
             }
-            onChange={handleChange} 
+            onChange={handleChange}
+            clearInput={clearInput}
           />
-          <div className="flex flex-col pt-10 gap-5 mb-2 sm:flex-row sm:justify-end sm:col-span-2">
+          <div className="flex flex-col-reverse pt-10 gap-5 mb-2 sm:flex-row sm:justify-end sm:col-span-2">
             <Link 
               href='/cart'
               className="py-2 px-4 bg-gray-100 rounded transition-all flex w-full justify-center hover:bg-gray-200 active:bg-gray-100 sm:w-1/5"
@@ -169,7 +189,7 @@ export default function AddressPage() {
             </Link>
             <button
               type='submit'
-              className="btn-primary flex w-full  sm:w-1/5 justify-center "
+              className="btn-primary flex w-full cursor-pointer sm:w-1/5 justify-center "
             >
               Siguiente
             </button>
@@ -177,7 +197,5 @@ export default function AddressPage() {
         </form>
       </div>
     </div>
-   
-    </>
   );
 }

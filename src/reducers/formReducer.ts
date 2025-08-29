@@ -23,14 +23,14 @@ export const initialState:FormState = {
         phone: ''
     },
     errors: {
-        fullname: null,   
-        lastname: null,
-        address: null,
-        opAddress: null,
-        postalCode: null,
-        city: null,
-        country: null,
-        phone: null
+        fullname: {status:null, valid:false},   
+        lastname: {status:null, valid:false},
+        address: {status:null, valid:false},
+        opAddress: {status:null, valid:false},
+        postalCode: {status:null, valid:false},
+        city: {status:null, valid:false},
+        country: {status:null, valid:false},
+        phone: {status:null, valid:false}
     }
 }
 
@@ -38,10 +38,13 @@ export const formReducer = (state:FormState, action:FormActionTypes) => {
     switch (action.type) {
         case "CHANGE_INPUT":
             return {
-                ...state,
                 values:{
                     ...state.values,
                     [action.field]:action.value
+                },
+                errors: {
+                    ...state.errors,
+                    [action.field]:{...state.errors[action.field], valid:expretions[action.field].test(String(action.value)) }
                 }
             }
         case "VALIDATE_INPUTS": 
@@ -49,14 +52,25 @@ export const formReducer = (state:FormState, action:FormActionTypes) => {
 
             (Object.keys(state.values) as (keyof typeof state.values)[]).forEach(key => {
                 if(state.values[key] === '') {
-                    errors[key] = 'empty'
+                    errors[key] = {...errors[key], status:'empty'}
                 } else {
                     const fieldValue = state.values[key]??''
                     const ckeckValue = expretions[key].test(fieldValue.toString());
-                    errors![key] = ckeckValue ? 'valid' : 'invalid'
+                    errors![key] = {...errors[key], status:ckeckValue ? 'valid' : 'invalid'}
                 }
             });
             return {...state, errors};
+        case "CLEAR_INPUT":
+            return {
+                values: {
+                    ...state.values,
+                    [action.field]:''
+                },
+                errors: {
+                    ...state.errors,
+                    [action.field]:{...state.errors[action.field], valid:false}
+                }
+            }
         case "RESET":
             return initialState;
         default:

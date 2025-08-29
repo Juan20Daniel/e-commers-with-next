@@ -9,16 +9,11 @@ export interface FormState {
         country: string;
         phone: string;
     },
-    errors: {
-        fullname: InputError;   
-        lastname: InputError;
-        address: InputError;
-        opAddress: InputError;
-        postalCode: InputError;
-        city: InputError;
-        country: InputError;
-        phone: InputError;
-    }
+    errors: Record<string, InputError>;
 }
-export type InputError = null|'empty'|'valid'|'invalid';
+interface InputError {
+    status:InputStatusError;
+    valid:boolean;
+}
+export type InputStatusError = null|'empty'|'valid'|'invalid';
    

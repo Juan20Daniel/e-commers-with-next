@@ -4,7 +4,12 @@ import React, { useContext, useEffect } from 'react';
 import { ScrollContext } from '@/context/ScrollContext';
 import { Item } from '../item/Item';
 
-export const ListItems = () => {
+interface Props {
+  canRemove:boolean;
+  showQuantitySelector:boolean;
+}
+
+export const ListItems = ({canRemove=true, showQuantitySelector=true}:Props) => {
   const scrollRef = useContext(ScrollContext)?.scrollRef;
   const setIsScrolling = useContext(ScrollContext)?.setIsScrolling;
   
@@ -22,15 +27,15 @@ export const ListItems = () => {
  
   return (
     <div className='w-full max-w-[500px] px-4 pb-17 lg:max-w-[900px]'>
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-      <Item />
-      <Item />
+      <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
+      <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
+      <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
+      <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
+      <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
+      <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
+      <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
+      <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
+      <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
     </div>
   )
 }

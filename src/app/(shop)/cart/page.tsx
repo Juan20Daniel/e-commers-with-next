@@ -1,4 +1,3 @@
-'use client'
 import { ListItems } from "@/components/cart/list-items/ListItems";
 import { OrderSumary } from "@/components/cart/order-summary/OrderSumary";
 
