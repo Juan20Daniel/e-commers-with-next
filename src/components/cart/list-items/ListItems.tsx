@@ -5,11 +5,12 @@ import { ScrollContext } from '@/context/ScrollContext';
 import { Item } from '../item/Item';
 
 interface Props {
-  canRemove:boolean;
-  showQuantitySelector:boolean;
+  canRemove?:boolean;
+  showQuantitySelector?:boolean;
+  children?: React.ReactNode;
 }
 
-export const ListItems = ({canRemove=true, showQuantitySelector=true}:Props) => {
+export const ListItems = ({canRemove=true, showQuantitySelector=true, children}:Props) => {
   const scrollRef = useContext(ScrollContext)?.scrollRef;
   const setIsScrolling = useContext(ScrollContext)?.setIsScrolling;
   
@@ -27,6 +28,7 @@ export const ListItems = ({canRemove=true, showQuantitySelector=true}:Props) => 
  
   return (
     <div className='w-full max-w-[500px] px-4 pb-17 lg:max-w-[900px]'>
+      {children}
       <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
       <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>
       <Item canRemove={canRemove} showQuantitySelector={showQuantitySelector}/>

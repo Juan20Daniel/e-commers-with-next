@@ -1,7 +1,6 @@
+import Link from "next/link";
 import { ListItems } from "@/components/cart/list-items/ListItems";
 import { OrderReview } from "@/components/cart/order-review/OrderReview";
-import { OrderSumary } from "@/components/cart/order-summary/OrderSumary";
-import Link from "next/link";
 export default function ChechoutPage() {
   return (
     <div className="flex flex-col items-center pt-5">
@@ -18,6 +17,3 @@ export default function ChechoutPage() {
     </div>
   );
 }
-
-
-    

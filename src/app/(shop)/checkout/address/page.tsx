@@ -42,8 +42,12 @@ export default function AddressPage() {
     dispatch({
       type:'VALIDATE_INPUTS'
     });
+    
     const formErrors = {...state.errors};
-    delete formErrors["opAddress"];
+    if(state.values.opAddress === '') {
+      delete formErrors["opAddress"];
+    }
+
     if(Object.values(formErrors).map(error => error.valid).includes(false)) {
       return alert("Error en uno de los campos")
     }

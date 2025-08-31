@@ -3,13 +3,17 @@ import { titleFont } from "@/config/fonts";
 import { useState } from "react";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { BoxDetails } from "../box-details/BoxDetails";
+import { OrderItem } from "../order-item/OrderItem";
 
+interface Props {
+    showBtnAction?:boolean;
+    children?: React.ReactNode;
+}
 
-export const OrderReview = () => {
+export const OrderReview = ({showBtnAction=true, children}:Props) => {
     const [ showDetails, setShowDetails ] = useState(true);
     return (
-        <BoxDetails>
-        
+        <BoxDetails link='/orders/123' showBtnAction={showBtnAction}>
             <div className={`transition-all duration-500 ease-in-out overflow-hidden
                 ${showDetails ? 'h-[202px]' : 'h-[32px]'}
             `}>
@@ -21,43 +25,23 @@ export const OrderReview = () => {
                 </div>
                 <div className='flex-row justify-between pb-3 flex transition-all pt-4 duration-500 ease-in-out'>
                     <span className='text-sm'>Nombre</span>
-                    <span className='text-sm pl-2 truncate'>Juvvggan Daniel Morales Abarca</span>
+                    <span className='text-sm pl-2 truncate'>Juan Daniel Morales Abarca</span>
                 </div>
-                <div className='flex flex-row justify-between pb-3'>
-                    <span className='text-sm'>Calle</span>
-                    <span className='text-sm'>Av. Siempre viva 123</span>
-                </div>
-                <div className='flex flex-row justify-between pb-3'>
-                    <span className='text-sm'>Alcaldia</span>
-                    <span className='text-sm'>Morelos y pavon</span>
-                </div>
-                <div className='flex flex-row justify-between pb-3'>
-                    <span className='text-sm'>Ciudad</span>
-                    <span className='text-sm'>México</span>
-                </div>
-                <div className='flex flex-row justify-between pb-3'>
-                    <span className='text-sm'>Teléfono</span>
-                    <span className='text-sm'>3141023884</span>
-                </div>
+                <OrderItem title="Ciudad" value="México"/>
+                <OrderItem title="Alcaldia" value="Av. Siempre viva 123"/>
+                <OrderItem title="Calle" value="Morelos y pavon"/>
+                <OrderItem title="Teléfono" value="3141023884"/>
             </div>
             <div className='w-full h-[1px] bg-gray-400 my-3' />
             <p className={`${titleFont.className} font-bold text-base pb-5 lg:text-2xl`}>Resumen de orden</p>
-            <div className='flex flex-row justify-between pb-3'>
-                <span className='text-sm'>Nu. Productos</span>
-                <span className='text-sm'>3 artículos</span>
-            </div>
-            <div className='flex flex-row justify-between pb-3'>
-                <span className='text-sm'>Subtotal</span>
-                <span className='text-sm'>$285.00</span>
-            </div>
-            <div className='flex flex-row justify-between pb-3'>
-                <span className='text-sm'>Impuestos(15%)</span>
-                <span className='text-sm'>Calculated at checkout</span>
-            </div>
+            <OrderItem title="Nu. Productos" value="3 artículos"/>
+            <OrderItem title="Subtotal" value="$285.00"/>
+            <OrderItem title="Impuestos(15%)" value="Calculated at checkout"/>
             <div className='flex flex-row justify-between pb-3'>
                 <span className='font-bold'>Total</span>
                 <span className='font-bold'>$485.00</span>
             </div>
+            {children}
         </BoxDetails>
     );
 }
