@@ -1,5 +1,5 @@
 'use client'
-import { SideMenu, TopMenu } from "@/components";
+import { Footer, SideMenu, TopMenu } from "@/components";
 import { ScrollContext } from "@/context/ScrollContext";
 import { useContext } from "react";
 
@@ -10,6 +10,7 @@ export default function ShopLayout({children}: {children: React.ReactNode;}) {
       <TopMenu />
       <SideMenu />
       {children}
+      <Footer />
     </main>
   );
 }

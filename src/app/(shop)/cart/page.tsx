@@ -1,7 +1,9 @@
 import { ListItems } from "@/components/cart/list-items/ListItems";
 import { OrderSumary } from "@/components/cart/order-summary/OrderSumary";
+import { redirect } from "next/navigation";
 
 export default function CartPage() {
+  // redirect('/empty')
   return (
     <div className="flex flex-col items-center pt-5">
       <h1 className='w-full max-w-[500px] px-4 text-3xl mb-5 lg:max-w-6xl'>
