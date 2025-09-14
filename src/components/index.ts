@@ -5,3 +5,4 @@ export { SideMenu } from "./ui/side-menu/SideMenu";
 export { Input } from "./ui/input/Input";
 export { Select } from "./ui/select/Select";
 export { Footer } from "./ui/footer/Footer";
+export { Pagination } from "./ui/pagination/Pagination";

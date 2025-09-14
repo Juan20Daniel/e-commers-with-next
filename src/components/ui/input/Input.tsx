@@ -1,6 +1,5 @@
 import { HTMLInputTypeAttribute } from "react";
 import { IoClose } from "react-icons/io5";
-import { InputError } from "@/interfaces/form-state.interface";
 import './styles.css';
 interface Props {
     id:string;
