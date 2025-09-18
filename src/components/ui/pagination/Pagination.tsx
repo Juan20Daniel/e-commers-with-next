@@ -1,7 +1,7 @@
 'use client';
 import clsx from "clsx";
 import { redirect } from "next/navigation";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 import { BoxBtn } from "./components/BoxBtn";
 import { NavLink } from "./components/NavLink";
@@ -12,16 +12,19 @@ interface Props {
 }
 
 export const Pagination = ({totalPages=1, currentPage=1}:Props) => {
-    const [ maxNumPagesByGroup, setMaxNumPagesByGroup ] = useState(window.innerWidth < 650 ? 5 : 10);
     const [ groupsPages, setGroupsPages ] = useState<Record<number, number[]>|null>(null);
+    const [ maxNumPagesByGroup, setMaxNumPagesByGroup ] = useState(5);
     const [ totalNumPageGroups, setTotalNumPageGroups ] = useState(0);
     const [ currentSetPages, setCurrentSetPages ] = useState(0);
     const isLastPage = currentPage===totalPages;
     const isFirstPage = currentPage===1;
     if(totalPages === 1) return;
-    useLayoutEffect(() => {
+    useEffect(() => {
+        setMaxNumPagesByGroup(window.innerWidth < 700 ? 5 : 10);
+    },[]);
+    useEffect(() => {
         const handleresize = () => {
-            setMaxNumPagesByGroup(window.innerWidth < 650 ? 5 : 10);
+            setMaxNumPagesByGroup(window.innerWidth < 700 ? 5 : 10);
         }
         window.addEventListener('resize', () => handleresize());
         return () => {
@@ -53,26 +56,31 @@ export const Pagination = ({totalPages=1, currentPage=1}:Props) => {
         setGroupsPages(resultPageGroups);
     }
     
-    const changeNextPage = (url:string) => {
-        if(!groupsPages) return;
-        if(groupsPages[currentSetPages][groupsPages[currentSetPages].length-1] === currentPage) {
-            setCurrentSetPages(Math.min(totalNumPageGroups, currentSetPages+1));
+    const searchKeyGroupOfCurrentPage = (nextPage:number):number => {
+        const groupsPagesCopy = {...groupsPages}
+        let keyGroupOfCurrentPage = null;
+        if(groupsPagesCopy[currentSetPages].includes(nextPage)) return currentSetPages;
+        for(let groupKey in groupsPagesCopy) {
+            const result = groupsPagesCopy[groupKey].includes(nextPage) ? Number(groupKey) : null;
+            if(result) {
+                keyGroupOfCurrentPage = result;
+                break;
+            }
         }
-        redirect(url);
+        return keyGroupOfCurrentPage??0;
     }
-    const backLastPage = (url:string) => {
+
+    const changeNextPage = (nextPage:number) => {
         if(!groupsPages) return;
-        if(groupsPages[currentSetPages][0] === currentPage) {
-            setCurrentSetPages(Math.max(0, currentSetPages-1));
-        }
-        redirect(url);
+        setCurrentSetPages(searchKeyGroupOfCurrentPage(nextPage));
+        redirect(`/?page=${nextPage}`);
     }
     return (
         <div className="flex justify-center">
             <nav aria-label="Page navigation example">
                 <ul className="flex list-style-none">
                     <BoxBtn
-                        action={() => backLastPage(`/?page=${Math.max(1, currentPage-1)}`)}
+                        action={() => changeNextPage(Math.max(1, currentPage-1))}
                         enableBtn={isFirstPage}
                     >
                         <IoChevronBackOutline size={20} />
@@ -100,6 +108,7 @@ export const Pagination = ({totalPages=1, currentPage=1}:Props) => {
                     }
                     {totalPages > maxNumPagesByGroup && 
                         <BoxBtn
+                            title={`${totalPages}`}
                             action={() => setCurrentSetPages(Math.min(totalNumPageGroups, currentSetPages+1))}
                             enableBtn={currentSetPages === totalNumPageGroups}
                         >
@@ -110,8 +119,8 @@ export const Pagination = ({totalPages=1, currentPage=1}:Props) => {
                             </div>
                         </BoxBtn>
                     }
-                    <BoxBtn 
-                        action={() => changeNextPage(`/?page=${Math.min(totalPages, currentPage+1)}`)}
+                    <BoxBtn
+                        action={() => changeNextPage(Math.min(totalPages, currentPage+1))}
                         enableBtn={isLastPage}
                     >
                         <IoChevronForwardOutline size={20} />

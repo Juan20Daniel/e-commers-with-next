@@ -3,12 +3,14 @@ import clsx from "clsx";
 interface Props {
     children:React.ReactNode;
     enableBtn:boolean;
+    title?:string;
     action:() => void;
 }
-export const BoxBtn = ({children, enableBtn, action}:Props) => {
+export const BoxBtn = ({children, enableBtn, title, action}:Props) => {
     return (
         <li className="page-item flex items-center">
             <button
+                title={title}
                 type="button"
                 onClick={() => action()} 
                 className={

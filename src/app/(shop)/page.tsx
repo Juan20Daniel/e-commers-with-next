@@ -26,7 +26,7 @@ export default async function Home({searchParams}:Props) {
         products={products}
       />
       <Pagination 
-        totalPages={totalPages+310}
+        totalPages={totalPages+100}
         currentPage={currentPage}
       />
     </> 
