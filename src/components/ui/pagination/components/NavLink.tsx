@@ -4,13 +4,14 @@ import Link from 'next/link';
 interface Props {
     numberPage:number;
     currentPage:number;
+    url:string;
 }
 
-export const NavLink = ({numberPage, currentPage}:Props) => {
+export const NavLink = ({numberPage, currentPage, url}:Props) => {
     return (
         <li className="page-item">
             <Link
-                href={`/?page=${numberPage}`} 
+                href={`${url}?page=${numberPage}`} 
                 className={
                     clsx(
                         "page-link px-1 h-[28px] flex justify-center items-center rounded outline-none transition-all duration-300 focus:shadow-none",

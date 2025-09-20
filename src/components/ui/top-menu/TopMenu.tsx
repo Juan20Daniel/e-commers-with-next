@@ -1,10 +1,10 @@
 'use client'
+import { useContext } from 'react';
 import Link from 'next/link';
 import { titleFont } from '@/config/fonts';
 import { IoCartOutline, IoMenuOutline, IoSearchOutline } from 'react-icons/io5';
 import { useUiStore } from '@/store';
-import { CategoryOption } from './CategoryOption';
-import { useContext } from 'react';
+import { GenderOption } from './CategoryOption';
 import { ScrollContext } from '@/context/ScrollContext';
 
 export const TopMenu = () => {
@@ -19,9 +19,9 @@ export const TopMenu = () => {
         </Link>
       </div>
       <div className='hidden sm:block'>
-        <CategoryOption text='Hombres' category='men' />
-        <CategoryOption text='Mujeres' category='women' />
-        <CategoryOption text='Niños' category='kid' />
+        <GenderOption text='Hombres' gender='men' />
+        <GenderOption text='Mujeres' gender='women' />
+        <GenderOption text='Niños' gender='kid' />
       </div>
       <div className='flex items-center'>
         <Link href="/search" className='ml-2 mr-2 p-2 transition-all hover:bg-gray-100 active:bg-gray-300 rounded-md'>

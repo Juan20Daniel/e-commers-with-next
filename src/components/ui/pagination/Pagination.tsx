@@ -1,17 +1,18 @@
 'use client';
-import clsx from "clsx";
-import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
+import { redirect } from "next/navigation";
 import { IoChevronBackOutline, IoChevronForwardOutline } from "react-icons/io5";
 import { BoxBtn } from "./components/BoxBtn";
 import { NavLink } from "./components/NavLink";
+import clsx from "clsx";
 
 interface Props {
     totalPages?: number;
     currentPage?: number;
+    url?:string;
 }
 
-export const Pagination = ({totalPages=1, currentPage=1}:Props) => {
+export const Pagination = ({totalPages=1, currentPage=1, url='/'}:Props) => {
     const [ groupsPages, setGroupsPages ] = useState<Record<number, number[]>|null>(null);
     const [ maxNumPagesByGroup, setMaxNumPagesByGroup ] = useState(5);
     const [ totalNumPageGroups, setTotalNumPageGroups ] = useState(0);
@@ -73,7 +74,7 @@ export const Pagination = ({totalPages=1, currentPage=1}:Props) => {
     const changeNextPage = (nextPage:number) => {
         if(!groupsPages) return;
         setCurrentSetPages(searchKeyGroupOfCurrentPage(nextPage));
-        redirect(`/?page=${nextPage}`);
+        redirect(`${url}?page=${nextPage}`);
     }
     return (
         <div className="flex justify-center">
@@ -102,7 +103,8 @@ export const Pagination = ({totalPages=1, currentPage=1}:Props) => {
                             <NavLink  
                                 key={numPage} 
                                 numberPage={numPage} 
-                                currentPage={currentPage} 
+                                currentPage={currentPage}
+                                url={url}
                             />
                         ))
                     }

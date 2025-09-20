@@ -1,21 +1,29 @@
-
+export const revalidate = 60;
+import { getProductBySlug } from "@/app/actions/products/get-product-by-slug";
 import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
 import { SizeSelector } from "@/components/product/size-selector/SizeSelector";
 import { ProductSlidershow } from "@/components/product/slidershow/ProductSlidershow";
 import { titleFont } from "@/config/fonts";
-import { initialData } from "@/seed/seed";
 import { notFound } from "next/navigation";
 
+export async function generateStaticParams() {
+  // Si quieres prerenderizar algunos slugs en el build:
+  // const products = await getAllProductSlugs();
+  // return products.map((slug) => ({ slug }));
+
+  return []; // <- Esto permite que los slugs se generen on-demand con ISR
+}
 interface Props {
   params: Promise<{slug:string}>;
 }
 
 export default async function ProductPage({params}:Props) {
   const { slug } = await params;
-  const product = initialData.products.find(product => product.slug === slug)
+  const product = await getProductBySlug(slug);
   if(!product) {
     notFound();
   }
+
   return (
     <div className="mt-5 mx-5 mb-20 gap-3 md:flex 2xl:gap-15">
       <ProductSlidershow 
@@ -23,6 +31,7 @@ export default async function ProductPage({params}:Props) {
         images={product.images}
       />
       <div className="col-span-1 pt-5">
+        <h1 className={`${titleFont.className} text-xl font-bold 2xl:text-2xl`}>Stock: {product.inStock}</h1>
         <h1 className={`${titleFont.className} text-xl font-bold 2xl:text-2xl`}>{product.title}</h1>
         <p className="text-lg mb-5">${product.price}</p>
         <SizeSelector availableSizes={product.sizes} defaultSize="S" />

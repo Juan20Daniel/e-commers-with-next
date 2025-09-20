@@ -1,6 +1,6 @@
 import { ListItems } from "@/components/cart/list-items/ListItems";
 import { OrderSumary } from "@/components/cart/order-summary/OrderSumary";
-import { redirect } from "next/navigation";
+// import { redirect } from "next/navigation";
 
 export default function CartPage() {
   // redirect('/empty')

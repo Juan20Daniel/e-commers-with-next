@@ -1,3 +1,4 @@
+export const revalidate = 60;
 import { Pagination, Title } from "@/components";
 import { ProductGrid } from "@/components/products/product-grid/ProductGrid";
 import { getPaginatedProductsWithImgs } from "../actions";
@@ -11,11 +12,11 @@ export default async function Home({searchParams}:Props) {
   const page = (await searchParams).page;
   const numPage = page ? parseInt(page) : 1;
   
-  const{ products, totalPages, currentPage } = await getPaginatedProductsWithImgs({page:numPage});
+  const { products, totalPages, currentPage } = await getPaginatedProductsWithImgs({page:numPage});
  
-  // if(!products.length) {
-  //   redirect('/');
-  // }
+  if(!products.length) {
+    redirect('/');
+  }
   return (
     <>
       <Title 
@@ -26,7 +27,7 @@ export default async function Home({searchParams}:Props) {
         products={products}
       />
       <Pagination 
-        totalPages={totalPages+100}
+        totalPages={totalPages}
         currentPage={currentPage}
       />
     </> 
