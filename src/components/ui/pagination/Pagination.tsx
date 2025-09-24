@@ -100,7 +100,7 @@ export const Pagination = ({totalPages=1, currentPage=1, url='/'}:Props) => {
                     }
                     {groupsPages &&
                         groupsPages[currentSetPages].map((numPage) => (
-                            <NavLink  
+                            <NavLink
                                 key={numPage} 
                                 numberPage={numPage} 
                                 currentPage={currentPage}

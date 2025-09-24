@@ -33,12 +33,12 @@ export default async function({params, searchParams}:Props) {
         title="Tienda"
         subTitle={`Productos para ${categorys[gender]}`}
       />
-      <ProductGrid products={products} />
-      <Pagination 
+      {/* <ProductGrid products={products} /> */}
+      {/* <Pagination 
         totalPages={totalPages}
         currentPage={currentPage}
         url={`/gender/${gender}`}
-      />
+      /> */}
     </>
   );
 }

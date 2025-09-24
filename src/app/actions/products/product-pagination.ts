@@ -17,7 +17,6 @@ export const getPaginatedProductsWithImgs = async ({page=1, take=12, gender}:Pag
             take:take,
             skip: (page - 1) * take,
             include: {
-                //tomar dos imagenes y que solo seleccione la url
                 ProductImage: {
                     take: 2,
                     select: {

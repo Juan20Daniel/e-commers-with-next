@@ -61,7 +61,7 @@ export default function AddressPage() {
   }
   return (
     <div className="flex justify-center">
-      <div className="w-full max-w-[1000px]">
+      {/* <div className="w-full max-w-[1000px]">
         <Title title="Dirección" subTitle="Dirección de entrega" />
         <form className="grid grid-cols-1 gap-4 px-4 pb-10 sm:gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
           <Input 
@@ -199,7 +199,7 @@ export default function AddressPage() {
             </button>
           </div>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 }

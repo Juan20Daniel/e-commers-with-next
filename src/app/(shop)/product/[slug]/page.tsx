@@ -7,11 +7,7 @@ import { titleFont } from "@/config/fonts";
 import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
-  // Si quieres prerenderizar algunos slugs en el build:
-  // const products = await getAllProductSlugs();
-  // return products.map((slug) => ({ slug }));
-
-  return []; // <- Esto permite que los slugs se generen on-demand con ISR
+  return [];
 }
 interface Props {
   params: Promise<{slug:string}>;
@@ -26,7 +22,7 @@ export default async function ProductPage({params}:Props) {
 
   return (
     <div className="mt-5 mx-5 mb-20 gap-3 md:flex 2xl:gap-15">
-      <ProductSlidershow 
+      {/* <ProductSlidershow 
         title={product.title}
         images={product.images}
       />
@@ -46,7 +42,7 @@ export default async function ProductPage({params}:Props) {
         <div className="max-w-[600px]">
           <p className="font-light">{product.description}</p>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

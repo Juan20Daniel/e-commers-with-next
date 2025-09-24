@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function EmptyPage() {
   return (
     <div className="flex flex-col justify-center items-center h-[800px]">
-      <div className="px-5">
+      {/* <div className="px-5">
         <Image 
           width={700}
           height={400}
@@ -18,7 +18,7 @@ export default function EmptyPage() {
         <Link href='/' className="text-blue-500 mt-2 text-base sm:text-xl">
           Regresar al inicio
         </Link>
-      </div>
+      </div> */}
     </div>
   );
 }
