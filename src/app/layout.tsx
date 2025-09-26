@@ -5,7 +5,10 @@ import "./globals.css";
 
 
 export const metadata: Metadata = {
-  title: "Teslo | Shop",
+  title: {
+    template:"%s - Teslo | Shop",
+    default: "Teslo | Shop"
+  },
   description: "Tienda virtual de productos en venta",
 };
 

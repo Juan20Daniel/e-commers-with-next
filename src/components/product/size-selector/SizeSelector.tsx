@@ -6,6 +6,7 @@ interface Props {
     defaultSize?: ValidSizes;
     availableSizes: ValidSizes[];
     selectSize?: string;
+    onSizeChange: (size: ValidSizes) => void;
 }
 
 interface Size {
@@ -13,7 +14,7 @@ interface Size {
     isSelect: boolean;
 }
 
-export const SizeSelector = ({defaultSize, availableSizes=[]}:Props) => {
+export const SizeSelector = ({defaultSize, availableSizes=[], onSizeChange}:Props) => {
     const [ sizes, setSizes ] = useState<Size[]>([]);
     useEffect(() => {
         const result = availableSizes.map(size => {
@@ -23,7 +24,8 @@ export const SizeSelector = ({defaultSize, availableSizes=[]}:Props) => {
         });
         setSizes(result);
     },[]);
-    const selectSize = (name:string) => {
+    const selectSize = (name:ValidSizes) => {
+        onSizeChange(name)
         const sizes_copy = [...sizes];
         const result = sizes_copy.map(size => size.size === name 
             ? {...size, isSelect:!size.isSelect} 

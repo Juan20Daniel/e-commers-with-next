@@ -5,7 +5,7 @@ import { IoCardOutline } from "react-icons/io5";
 export default function OrdersPage() {
   return (
     <div className="flex flex-col items-center">
-      {/* <div className="w-full max-w-7xl">
+      <div className="w-full max-w-7xl">
         <Title title="Orders" />
         <div className="mb-10 mx-5 mt-5 overflow-auto">
           <div className="min-w-[628px]">
@@ -61,7 +61,7 @@ export default function OrdersPage() {
             </table>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 }
