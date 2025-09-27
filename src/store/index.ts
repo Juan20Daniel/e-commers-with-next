@@ -1,1 +1,1 @@
-export { useUiStore } from "./ui/ui-store";
+export { useSideMenuStore } from "./ui/side-menu-store";

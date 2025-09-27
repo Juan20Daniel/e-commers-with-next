@@ -3,12 +3,12 @@ import { useContext } from 'react';
 import Link from 'next/link';
 import { titleFont } from '@/config/fonts';
 import { IoCartOutline, IoMenuOutline, IoSearchOutline } from 'react-icons/io5';
-import { useUiStore } from '@/store';
+import { useSideMenuStore } from '@/store';
 import { GenderOption } from './CategoryOption';
 import { ScrollContext } from '@/context/ScrollContext';
 
 export const TopMenu = () => {
-  const opemSideMenu = useUiStore(state => state.openSideMenu);
+  const opemSideMenu = useSideMenuStore(state => state.openSideMenu);
   const isScrolling = useContext(ScrollContext)?.isScrolling;
   return (
     <nav className={`${isScrolling ? "border-gray-200" : "border-white"} border-b-1 flex px-5 pt-2 justify-between h-[60px] items-center w-full sticky top-0 bg-white z-2`}>

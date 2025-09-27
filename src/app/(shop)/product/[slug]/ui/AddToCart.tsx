@@ -10,7 +10,13 @@ interface Props {
 
 export const AddToCart = ({product}:Props) => {
     const [ size, setSize ] = useState<ValidSizes | undefined>();
-
+    const [ quantity, setQuantity ] = useState<number>(1);
+    const [ posted, setPosted ] = useState<boolean>(false);
+    const addToCart = () => {
+        setPosted(true);
+        if(!size) return;
+        console.log({size, quantity})
+    }
     return (
         <>
             <SizeSelector 
@@ -18,11 +24,18 @@ export const AddToCart = ({product}:Props) => {
                 availableSizes={product.sizes}
                 onSizeChange={(sizeSelected) => setSize(sizeSelected)}
             />
-            <p className="font-bold text-sm mb-2">Cantidad</p>
+            {(posted && !size) &&
+                <span className='text-red-600 fade-in'>Selecciona una de las tallas disponibles</span>
+            }
+            <p className="font-bold text-sm mb-2 mt-3">Cantidad</p>
             <div className="h-[40px]">
-                <QuantitySelector />
+                <QuantitySelector
+                    defaultCant={quantity}
+                    maxQuantity={product.inStock}
+                    onQuantityCanged={setQuantity} 
+                />
             </div>
-            <button className="btn-primary my-5 cursor-pointer">
+            <button type='button' onClick={addToCart} className="btn-primary my-5 cursor-pointer">
                 Agregar al carrito
             </button>
         </>

@@ -1,6 +1,6 @@
 'use client'
 import Link from "next/link";
-import { useUiStore } from "@/store";
+import { useSideMenuStore } from "@/store";
 import { 
   IoCloseOutline, 
   IoLogInOutline, 
@@ -16,8 +16,8 @@ import {
 import { LiaChildSolid } from "react-icons/lia";
 
 export const SideMenu = () => {
-  const isSideMenuOpen = useUiStore(state => state.isSideMenuOpen);
-  const closeSideMenu = useUiStore(state => state.closeSideMenu);
+  const isSideMenuOpen = useSideMenuStore(state => state.isSideMenuOpen);
+  const closeSideMenu = useSideMenuStore(state => state.closeSideMenu);
   return (
     <>
       {isSideMenuOpen && <div className='fixed top-0 left-0 w-screen h-screen z-5 bg-[#0000003a]' />}

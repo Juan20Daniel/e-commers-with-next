@@ -1,10 +1,10 @@
-"use client"; // 👈 muy importante
+"use client";
 
+import { Suspense } from "react";
 import { useContext, useEffect } from "react";
-import { Footer, SideMenu, TopMenu } from "@/components";
+import { Alert, Footer, SideMenu, TopMenu } from "@/components";
 import { ScrollContext } from "@/context/ScrollContext";
 import { useSearchParams } from "next/navigation";
-import { Suspense } from "react";
 
 function LayoutContent({ children }: { children: React.ReactNode }) {
   const scrollRef = useContext(ScrollContext)?.scrollRef;
@@ -30,6 +30,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       <SideMenu />
       {children}
       <Footer />
+      <Alert />
     </main>
   );
 }

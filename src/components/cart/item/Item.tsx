@@ -35,7 +35,7 @@ export const Item = ({canRemove, showQuantitySelector}:Props) => {
                 <span className="text-[10px] sm:text-[12px] xl:text-[13px]">Burgundy, L</span>
                 <div className="h-[19px] flex gap-3">
                     <span className="text-[10px] sm:text-[12px] xl:text-[13px]">Cantidad: 1</span>
-                    {showQuantitySelector && <QuantitySelector />}
+                    {showQuantitySelector && <QuantitySelector defaultCant={1} maxQuantity={10} onQuantityCanged={() => {}} />}
                 </div>
             </div>
         </div>

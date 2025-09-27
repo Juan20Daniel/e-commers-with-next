@@ -37,7 +37,7 @@ export const SizeSelector = ({defaultSize, availableSizes=[], onSizeChange}:Prop
     return (
         <>
             <p className="font-bold text-sm mb-2">Tallas disponibles</p>
-            <div className='flex flex-row flex-wrap mb-5 gap-2'>
+            <div className='flex flex-row flex-wrap mb-2 gap-2'>
                 {sizes.map(({size, isSelect}) => (
                     <button
                         onClick={() => selectSize(size)}

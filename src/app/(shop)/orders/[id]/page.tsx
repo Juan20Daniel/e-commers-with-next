@@ -12,7 +12,7 @@ export default async function OrderPage({params}:Props) {
 
   return (
     <div className="flex flex-col items-center pt-5">
-      {/* <h1 className='w-full font-semibold max-w-[500px] px-4 text-3xl mb-2 lg:max-w-6xl'>
+      <h1 className='w-full font-semibold max-w-[500px] px-4 text-3xl mb-2 lg:max-w-6xl'>
         Orden #{id}
       </h1>
       <div className="w-full max-w-6xl flex flex-col items-center lg:flex-row lg:items-start">
@@ -44,7 +44,7 @@ export default async function OrderPage({params}:Props) {
             <span className="text-white text-ls">Pagada</span>
           </div>
         </OrderReview>
-      </div> */}
+      </div>
     </div>
   );
 }
