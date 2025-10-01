@@ -18,12 +18,7 @@ export const GenderOption = ({text, gender}:Props) => {
     const pathname = usePathname();
     return (
         <Link 
-            className={`
-                ml-2 
-                mr-2 
-                p-2 
-                rounded-md 
-                transition-all 
+            className={`ml-2 mr-2 p-2 rounded-md transition-all 
                 ${gender === getGenderByPath(pathname)
                     ? "bg-blue-500 text-white hover:bg-blue-500" 
                     : "hover:bg-gray-100"} 

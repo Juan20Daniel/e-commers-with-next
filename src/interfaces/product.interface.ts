@@ -12,6 +12,16 @@ export interface Product {
     gender: Gender
 }
 
-export type Gender = 'men'|'women'|'kid'|'unisex';
-export type ValidSizes = 'XS'|'S'|'M'|'L'|'XL'|'XXL'|'XXXL';
-export type ValidTypes = 'shirts'|'pants'|'hoodies'|'hats';
+export interface CartProduct {
+    id: string;
+    slug: string;
+    price: number;
+    title: string;
+    size: ValidSizes;
+    quantity: number;
+    image: string;
+}
+
+export type Gender = 'men' | 'women' | 'kid' | 'unisex';
+export type ValidSizes = 'XS' | 'S' | 'M' | 'L' | 'XL' | 'XXL' | 'XXXL';
+export type ValidTypes = 'shirts' | 'pants' | 'hoodies' | 'hats';

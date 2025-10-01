@@ -23,7 +23,7 @@ export const SizeSelector = ({defaultSize, availableSizes=[], onSizeChange}:Prop
                 : {size:size, isSelect:defaultSize === size}
         });
         setSizes(result);
-    },[]);
+    },[defaultSize]);
     const selectSize = (name:ValidSizes) => {
         onSizeChange(name)
         const sizes_copy = [...sizes];

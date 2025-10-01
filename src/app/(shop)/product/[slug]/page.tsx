@@ -42,7 +42,7 @@ export default async function ProductPage({params}:Props) {
   }
 
   return (
-    <div className="mt-5 mx-5 mb-20 gap-3 md:flex 2xl:gap-15">
+    <div className="mt-5 mx-5 mb-10 gap-3 md:flex 2xl:gap-15">
       <ProductSlidershow 
         title={product.title}
         images={product.images}
