@@ -7,7 +7,7 @@ export const OrderSumary = () => {
    
     return (
         <BoxDetails link='/checkout/address'>
-            <p className={`${titleFont.className} font-bold text-base pb-5 lg:text-2xl`}>Order Summary</p>
+            <p className={`${titleFont.className} font-bold text-base pb-5 lg:text-2xl`}>Resumen de orden</p>
             <div className='flex flex-row justify-between pb-3'>
                 <span className='text-sm'>Nu. Productos</span>
                 <span className='text-sm'>3 artículos</span>

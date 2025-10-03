@@ -3,7 +3,6 @@ import { interLight } from "@/config/fonts";
 import { ScrollProvider } from "@/context/ScrollContext";
 import "./globals.css";
 
-
 export const metadata: Metadata = {
   title: {
     template:"%s - Teslo | Shop",

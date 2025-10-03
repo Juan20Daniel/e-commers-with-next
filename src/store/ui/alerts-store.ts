@@ -2,10 +2,11 @@ import { create } from 'zustand';
 
 interface AlertData {
     visible?: boolean;
-    type: 'message' | 'error' | null
+    type: 'message' | 'error' | 'confirm' | null
     title: string;
     message: string;
     subMessage?: string;
+    confirmAction?:() => void;
 }
 
 interface InitialState extends AlertData {
@@ -19,13 +20,16 @@ export const useAlertsStore = create<InitialState>()((set) => ({
     title: '',
     message: '',
     subMessage: '',
-    open: ({type, title, message, subMessage}:AlertData) => {
+    confirmAction: undefined,
+
+    open: ({type, title, message, subMessage, confirmAction=undefined}:AlertData) => {
         set({
             visible: true,
             type: type,
             title: title,
             message: message,
-            subMessage: subMessage??''
+            subMessage: subMessage??'',
+            confirmAction
         });
     },
     close: () => {
@@ -34,7 +38,8 @@ export const useAlertsStore = create<InitialState>()((set) => ({
             type: null,
             title: '',
             message: '',
-            subMessage: ''
+            subMessage: '',
+            confirmAction: undefined,
         });
     }
 }));

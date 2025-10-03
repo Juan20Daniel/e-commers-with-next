@@ -4,6 +4,7 @@ import { QuantitySelector } from '@/components/product/quantity-selector/Quantit
 import { SizeSelector } from '@/components/product/size-selector/SizeSelector';
 import { Product, ValidSizes } from '@/interfaces/product.interface';
 import { useCartStore } from '@/store/cart/cart-store';
+import { useAlertsStore } from '@/store/ui/alerts-store';
 
 interface Props {
     product:Product
@@ -14,6 +15,7 @@ export const AddToCart = ({product}:Props) => {
     const [ size, setSize ] = useState<ValidSizes | undefined>();
     const [ quantity, setQuantity ] = useState<number>(1);
     const [ posted, setPosted ] = useState<boolean>(false);
+    const { open:openAlert } = useAlertsStore(state => state);
     const addToCart = () => {
         setPosted(true);
         if(!size) return;
@@ -26,6 +28,11 @@ export const AddToCart = ({product}:Props) => {
             quantity: quantity,
             image: product.images[0]
         }
+        openAlert({
+            title:'Producto agregado',
+            message: 'Se agregó el producto al carrito de compras',
+            type:'message'
+        })
         addProducttoCart(productToAdd);
         setSize(undefined);
         setQuantity(1);

@@ -2,7 +2,7 @@ import { useAlertsStore } from "@/store/ui/alerts-store";
 import clsx from "clsx";
 
 export const Alert = () => {
-    const { visible, title, message, subMessage, close } = useAlertsStore(state => state);
+    const { visible, type, title, message, subMessage, confirmAction, close } = useAlertsStore(state => state);
     return (
         <>
             {visible && <div className="fixed top-0 left-0 z-5 w-screen h-screen bg-[#0000003a]" />}
@@ -19,10 +19,24 @@ export const Alert = () => {
                     <span className="font-bold text-lg sm:text-2xl pb-2">{title}</span>
                     <p className={clsx("text-sm sm:text-base", subMessage ? 'pb-2' : 'pb-3')}>{message}</p>
                     {subMessage && <p className="text-sm sm:text-base pb-3 text-gray-600">{subMessage}</p>}
-                    <div className="flex flex-row justify-end">
-                        <button onClick={() => close()} className="bg-blue-500 px-6 py-1 rounded-3xl cursor-pointer text-white active:bg-blue-400 transition-all">
-                            Ok
-                        </button>
+                    <div className="flex flex-row gap-4 justify-end">
+                        {(type === 'message') &&
+                            <button onClick={() => close()} className="bg-blue-500 px-6 py-1 rounded-3xl cursor-pointer text-white active:bg-blue-400 transition-all">
+                                Ok
+                            </button>
+                        }
+                         {(type === 'confirm') &&
+                            <>
+                                <button onClick={() => close()} className="bg-white px-6 py-1 rounded-3xl cursor-pointer shadow-xl text-black active:bg-gray-200 transition-all">
+                                    No
+                                </button>
+                                <button onClick={() => {
+                                    confirmAction && confirmAction()
+                                }} className="bg-red-900 px-6 py-1 rounded-3xl cursor-pointer shadow-xl text-white active:bg-red-500 transition-all">
+                                    Si
+                                </button>
+                            </>
+                        }
                     </div>
                 </div>
             </div>

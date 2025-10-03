@@ -1,5 +1,5 @@
 'use client'
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { titleFont } from '@/config/fonts';
 import { IoCartOutline, IoMenuOutline, IoSearchOutline } from 'react-icons/io5';
@@ -9,9 +9,13 @@ import { ScrollContext } from '@/context/ScrollContext';
 import { useCartStore } from '@/store/cart/cart-store';
 
 export const TopMenu = () => {
+  const [ isLoading, setIsLoading ] = useState(true);
   const opemSideMenu = useSideMenuStore(state => state.openSideMenu);
-  const { cart } = useCartStore();
+  const { getTotalProductsInCart } = useCartStore();
   const isScrolling = useContext(ScrollContext)?.isScrolling;
+  useEffect(() => {
+    setIsLoading(false);
+  },[])
   return (
     <nav className={`${isScrolling ? "border-gray-200" : "border-white"} border-b-1 flex px-5 pt-2 justify-between h-[60px] items-center w-full sticky top-0 bg-white z-2`}>
       <div>
@@ -31,9 +35,9 @@ export const TopMenu = () => {
         </Link>
         <Link href="/cart" className='ml-2 mr-2 p-2 transition-all hover:bg-gray-100 active:bg-gray-300 rounded-md'>
           <div className='relative'>
-          {cart.length > 0 &&
+          {(!isLoading && getTotalProductsInCart() > 0) &&
             <div className='w-5 h-5 absolute -top-3 -right-3 bg-blue-500 flex justify-center items-center rounded-full'>
-              <span className='block text-white text-xs text-center'>{cart.length}</span>
+              <span className='block text-white text-xs text-center'>{getTotalProductsInCart()}</span>
             </div>
           }
             <IoCartOutline className='w-5 h-5'/>
