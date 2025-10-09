@@ -15,6 +15,7 @@ export const AddToCart = ({product}:Props) => {
     const [ size, setSize ] = useState<ValidSizes | undefined>();
     const [ quantity, setQuantity ] = useState<number>(1);
     const [ posted, setPosted ] = useState<boolean>(false);
+    
     const { open:openAlert } = useAlertsStore(state => state);
     const addToCart = () => {
         setPosted(true);
@@ -24,14 +25,14 @@ export const AddToCart = ({product}:Props) => {
             slug: product.slug,
             price: product.price,
             title: product.title,
+            inStock: product.inStock,
             size: size,
             quantity: quantity,
             image: product.images[0]
         }
         openAlert({
-            title:'Producto agregado',
-            message: 'Se agregó el producto al carrito de compras',
-            type:'message'
+            message: 'Se agregó el producto al carrito de compras.',
+            type:'alert-message-top'
         })
         addProducttoCart(productToAdd);
         setSize(undefined);
@@ -53,7 +54,7 @@ export const AddToCart = ({product}:Props) => {
                 <QuantitySelector
                     defaultCant={quantity}
                     maxQuantity={product.inStock}
-                    onQuantityCanged={setQuantity} 
+                    onQuantityCanged={setQuantity}
                 />
             </div>
             <button type='button' onClick={addToCart} className="btn-primary my-5 cursor-pointer">

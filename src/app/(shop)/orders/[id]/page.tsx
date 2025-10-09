@@ -40,7 +40,6 @@ export default async function OrderPage({params}:Props) {
             )
           }>
             <IoCardOutline className="text-white" size={25} />
-          
             <span className="text-white text-ls">Pagada</span>
           </div>
         </OrderReview>

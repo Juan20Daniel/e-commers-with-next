@@ -2,7 +2,7 @@
 
 import { Suspense } from "react";
 import { useContext, useEffect } from "react";
-import { Alert, Footer, SideMenu, TopMenu } from "@/components";
+import { AlertBottom, AlertMessageTop, Footer, SideMenu, TopMenu } from "@/components";
 import { ScrollContext } from "@/context/ScrollContext";
 import { useSearchParams } from "next/navigation";
 
@@ -30,7 +30,8 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
       <SideMenu />
       {children}
       <Footer />
-      <Alert />
+      <AlertBottom />
+      <AlertMessageTop />
     </main>
   );
 }

@@ -30,7 +30,8 @@ export const ListItems = ({canRemove=true, showQuantitySelector=true, children}:
   return (
     <div className='w-full max-w-[500px] px-4 pb-17 lg:max-w-[900px]'>
       {children}
-      {cart.map((product, index) => (
+      {cart &&
+        cart!.map((product, index) => (
         <Item
           key={product.id+`${index}`}
           product={product}
@@ -38,6 +39,7 @@ export const ListItems = ({canRemove=true, showQuantitySelector=true, children}:
           showQuantitySelector={showQuantitySelector}
         />
       ))}
+      
     </div>
   )
 }

@@ -2,8 +2,8 @@ import { create } from 'zustand';
 
 interface AlertData {
     visible?: boolean;
-    type: 'message' | 'error' | 'confirm' | null
-    title: string;
+    type: 'alert-message-top' | 'alert-message-bottom' | 'error' | 'alert-confirm' | null
+    title?: string;
     message: string;
     subMessage?: string;
     confirmAction?:() => void;

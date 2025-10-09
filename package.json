@@ -7,9 +7,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "seed":"ts-node src/seed/seed-database.ts"
+    "seed": "ts-node src/seed/seed-database.ts"
   },
   "dependencies": {
+    "@fastify/deepmerge": "^3.1.0",
     "@prisma/client": "^6.15.0",
     "@prisma/extension-accelerate": "^2.0.2",
     "clsx": "^2.1.1",

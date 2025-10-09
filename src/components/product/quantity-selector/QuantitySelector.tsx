@@ -1,19 +1,20 @@
 'use client';
 import clsx from "clsx";
-import { useState } from "react";
+
 interface Props {
     defaultCant: number;
     maxQuantity: number;
     sizeNum?: 'big' | 'small';
-    onQuantityCanged: (quantity:number) => void;
+    onQuantityCanged: (quantity:number, isIncreasing:boolean) => void;
+    onIsIncreasing?:(isIncreasing:boolean) => void;
 }
 
 export const QuantitySelector = ({defaultCant, maxQuantity, sizeNum='big', onQuantityCanged}:Props) => {
     const imcrement = () => {
-        onQuantityCanged(Math.min(maxQuantity, defaultCant+1));
+        onQuantityCanged(Math.min(maxQuantity, defaultCant+1), true);
     }
     const decrement = () => {
-        onQuantityCanged(Math.max(1, defaultCant-1));
+        onQuantityCanged(Math.max(1, defaultCant-1), false);
     }
     return (
         

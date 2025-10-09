@@ -17,6 +17,7 @@ export interface CartProduct {
     slug: string;
     price: number;
     title: string;
+    inStock: number;
     size: ValidSizes;
     quantity: number;
     image: string;

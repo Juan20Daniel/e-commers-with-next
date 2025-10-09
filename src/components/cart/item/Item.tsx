@@ -1,9 +1,8 @@
-import Image from "next/image";
+import { useState } from "react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import Image from "next/image";
 import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
 import { CartProduct } from "@/interfaces/product.interface";
-import { useState } from "react";
 import { useAlertsStore } from "@/store/ui/alerts-store";
 import { useCartStore } from "@/store/cart/cart-store";
 
@@ -15,11 +14,11 @@ interface Props {
 
 export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
     const { open:openAlert, close:closeAlert } = useAlertsStore(state => state);
-    const {removeProduct, cart} = useCartStore(state => state);
+    const {removeProduct, updateProductQuantity} = useCartStore(state => state);
     const [ quantity, setQuantity ] = useState(product.quantity);
     const confirmDeletion = () => {
         openAlert({
-            type:"confirm", 
+            type:"alert-confirm", 
             title:"Eliminar del carrito", 
             message:"¿Seguro que quieres eliminar este producto del carrito de compras?",
             confirmAction:removeProductFromCart
@@ -28,6 +27,14 @@ export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
     const removeProductFromCart = () => {
         removeProduct(product);
         closeAlert();
+    }
+    const handleQuantity = (newQuantity: number, isIncreasing:boolean) => {
+        openAlert({
+            type:"alert-message-top", 
+            message: "Se modificó la cantidad del producto",
+        });
+        setQuantity(newQuantity);
+        updateProductQuantity(product, newQuantity, isIncreasing);
     }
     return (
         <div className="flex mb-8">
@@ -41,7 +48,7 @@ export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
                 />
                 {canRemove &&
                     <div className="absolute bottom-[-9px] w-full flex justify-center">
-                        <button 
+                        <button
                             onClick={() => confirmDeletion()}
                             className="bg-white text-black border-[1px] border-gray-300 text-[8px] px-2 py-1 rounded-3xl cursor-pointer hover:bg-red-800 active:bg-red-500 hover:text-white transition-all sm:text-[10px] sm:px-3"
                         >
@@ -63,9 +70,9 @@ export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
                     {showQuantitySelector &&
                         <QuantitySelector
                             defaultCant={quantity}
-                            maxQuantity={10}
+                            maxQuantity={product.inStock}
                             sizeNum="small"
-                            onQuantityCanged={(quantity) => setQuantity(quantity)}
+                            onQuantityCanged={handleQuantity}
                         />
                     }
                 </div>

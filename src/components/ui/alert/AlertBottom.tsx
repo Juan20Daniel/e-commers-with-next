@@ -1,17 +1,17 @@
 import { useAlertsStore } from "@/store/ui/alerts-store";
 import clsx from "clsx";
 
-export const Alert = () => {
+export const AlertBottom = () => {
     const { visible, type, title, message, subMessage, confirmAction, close } = useAlertsStore(state => state);
     return (
         <>
-            {visible && <div className="fixed top-0 left-0 z-5 w-screen h-screen bg-[#0000003a]" />}
-            {visible && <div onClick={() => close()} className="fixed top-0 left-0 z-6 w-screen h-screen backdrop-blur-[2px]" />}
-            <div 
+            {(visible && type !== 'alert-message-top') && <div className="fixed top-0 left-0 z-5 w-screen h-screen bg-[#0000003a]" />}
+            {(visible && type !== 'alert-message-top') && <div onClick={() => close()} className="fixed top-0 left-0 z-6 w-screen h-screen backdrop-blur-[2px]" />}
+            <div
                 onClick={() => close()}
                 className={
-                    clsx("fixed z-7 bottom-10 w-full flex justify-center transition-all duration-300 transform ",
-                        !visible && "translate-y-[500px]"
+                    clsx("fixed z-7 bottom-[-400px] w-full flex justify-center transition-all duration-300 transform",
+                        (visible && type !== 'alert-message-top') && "translate-y-[-450px]"
                     )
                 }
             >
@@ -20,12 +20,12 @@ export const Alert = () => {
                     <p className={clsx("text-sm sm:text-base", subMessage ? 'pb-2' : 'pb-3')}>{message}</p>
                     {subMessage && <p className="text-sm sm:text-base pb-3 text-gray-600">{subMessage}</p>}
                     <div className="flex flex-row gap-4 justify-end">
-                        {(type === 'message') &&
+                        {(type === 'alert-message-bottom') &&
                             <button onClick={() => close()} className="bg-blue-500 px-6 py-1 rounded-3xl cursor-pointer text-white active:bg-blue-400 transition-all">
                                 Ok
                             </button>
                         }
-                         {(type === 'confirm') &&
+                         {(type === 'alert-confirm') &&
                             <>
                                 <button onClick={() => close()} className="bg-white px-6 py-1 rounded-3xl cursor-pointer shadow-xl text-black active:bg-gray-200 transition-all">
                                     No
