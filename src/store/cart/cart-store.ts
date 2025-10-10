@@ -47,10 +47,9 @@ export const useCartStore = create<InitialState>()(
             },
             removeProduct: (product:CartProduct) => {
                 const cart = get().cart;
-
+                console.log(product)
                 const result = cart!.filter(productInCart => {
-                    console.log(productInCart.id !== product.id && productInCart.size !== product.size)
-                    return (productInCart.id !== product.id && productInCart.size !== product.size)
+                    return (productInCart.id !== product.id || productInCart.size !== product.size) && productInCart
                 });
                 set({cart:result});
             },

@@ -33,7 +33,7 @@ export const ListItems = ({canRemove=true, showQuantitySelector=true, children}:
       {cart &&
         cart!.map((product, index) => (
         <Item
-          key={product.id+`${index}`}
+          key={`${index}`}
           product={product}
           canRemove={canRemove} 
           showQuantitySelector={showQuantitySelector}

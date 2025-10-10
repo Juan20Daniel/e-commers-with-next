@@ -1,4 +1,5 @@
-import { useState } from "react";
+'use client'
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { QuantitySelector } from "@/components/product/quantity-selector/QuantitySelector";
@@ -15,7 +16,11 @@ interface Props {
 export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
     const { open:openAlert, close:closeAlert } = useAlertsStore(state => state);
     const {removeProduct, updateProductQuantity} = useCartStore(state => state);
-    const [ quantity, setQuantity ] = useState(product.quantity);
+    const [ quantity, setQuantity ] = useState(0);
+    useEffect(() => {
+        setQuantity(product.quantity);
+    },[product.quantity]);
+    console.log('exce')
     const confirmDeletion = () => {
         openAlert({
             type:"alert-confirm", 
