@@ -1,10 +1,11 @@
 export { AlertBottom } from "./ui/alert/AlertBottom";
 export { AlertMessageTop } from "./ui/alert/AlertMessageTop";
-export { TopMenu } from "./ui/top-menu/TopMenu";
-export { PageNotFound } from "./ui/not-fount/PageNotFound";
-export { Title } from "./ui/title/Title";
-export { SideMenu } from "./ui/side-menu/SideMenu";
-export { Input } from "./ui/input/Input";
-export { Select } from "./ui/select/Select";
 export { Footer } from "./ui/footer/Footer";
+export { Input } from "./ui/input/Input";
+export { PageNotFound } from "./ui/not-fount/PageNotFound";
 export { Pagination } from "./ui/pagination/Pagination";
+export { Select } from "./ui/select/Select";
+export { SideMenu } from "./ui/side-menu/SideMenu";
+export { Spinner } from "./ui/spinner/Spinner";
+export { Title } from "./ui/title/Title";
+export { TopMenu } from "./ui/top-menu/TopMenu";

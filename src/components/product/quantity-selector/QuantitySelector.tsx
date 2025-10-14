@@ -1,3 +1,4 @@
+import { useAlertsStore } from "@/store/ui/alerts-store";
 import clsx from "clsx";
 
 interface Props {
@@ -9,11 +10,21 @@ interface Props {
 }
 
 export const QuantitySelector = ({defaultCant, maxQuantity, sizeNum='big', onQuantityCanged}:Props) => {
+    const { open:openAlert } = useAlertsStore(state => state);
     const imcrement = () => {
-        onQuantityCanged(Math.min(maxQuantity, defaultCant+1), true);
+        const newCuantity = defaultCant+1;
+        if(newCuantity>maxQuantity) {
+            return openAlert({
+                type:"alert-message-top",
+                message: "Ya agregaste la cantidad máxima de este producto",
+            });
+        }
+        onQuantityCanged(Math.min(maxQuantity, newCuantity), true);
     }
     const decrement = () => {
-        onQuantityCanged(Math.max(1, defaultCant-1), false);
+        const newCuantity = defaultCant-1;
+        if(!newCuantity) return;
+        onQuantityCanged(Math.max(1, newCuantity), false);
     }
     return (
         

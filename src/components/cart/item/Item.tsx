@@ -20,7 +20,6 @@ export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
     useEffect(() => {
         setQuantity(product.quantity);
     },[product.quantity]);
-    console.log('exce')
     const confirmDeletion = () => {
         openAlert({
             type:"alert-confirm", 
@@ -34,12 +33,12 @@ export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
         closeAlert();
     }
     const handleQuantity = (newQuantity: number, isIncreasing:boolean) => {
-        openAlert({
-            type:"alert-message-top", 
-            message: "Se modificó la cantidad del producto",
-        });
         setQuantity(newQuantity);
         updateProductQuantity(product, newQuantity, isIncreasing);
+        openAlert({
+            type:"alert-message-top",
+            message: "Se modificó la cantidad del producto",
+        });
     }
     return (
         <div className="flex mb-8">

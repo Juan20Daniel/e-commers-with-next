@@ -1,4 +1,5 @@
 'use client';
+import { Spinner } from "@/components";
 import { ListItems } from "@/components/cart/list-items/ListItems";
 import { OrderSumary } from "@/components/cart/order-summary/OrderSumary";
 import { useCartStore } from "@/store/cart/cart-store";
@@ -6,7 +7,7 @@ import { redirect } from "next/navigation";
 
 export default function CartPage() {
   const cart = useCartStore(state => state.cart);
-  if(!cart) return <p>Loading</p>;
+  if(!cart) return <Spinner />;
   if(!cart.length) redirect('/empty');
   return (
     <div className="flex flex-col items-center pt-5">

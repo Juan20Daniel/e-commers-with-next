@@ -13,7 +13,7 @@ interface Props {
 export const OrderReview = ({showBtnAction=true, children}:Props) => {
     const [ showDetails, setShowDetails ] = useState(true);
     return (
-        <BoxDetails link='/orders/123' showBtnAction={showBtnAction}>
+        <BoxDetails link='/orders/123' showBtnAction={showBtnAction} textBtn="Pagar">
             <div className={`transition-all duration-500 ease-in-out overflow-hidden
                 ${showDetails ? 'h-[202px]' : 'h-[32px]'}
             `}>
