@@ -1,15 +1,15 @@
 'use client';
 
-import { ScrollContext } from "@/context/ScrollContext";
-import { useContext } from "react";
+import { AlertMessageTop } from "@/components";
 
 export default function AuthLayout({children}: {children: React.ReactNode;}) {
-  const scrollRef = useContext(ScrollContext)?.scrollRef;
+ 
   return (
-    <main ref={scrollRef} className="flex justify-center">
+    <main className="relative flex justify-center">
       <div className="w-full sm:w-[450px] px-10">
         {children}
       </div>
+      <AlertMessageTop />
     </main>
   );
 }
