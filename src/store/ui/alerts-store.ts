@@ -6,6 +6,7 @@ interface AlertData {
     title?: string;
     message: string;
     subMessage?: string;
+    color?: 'green' | 'red';
     confirmAction?:() => void;
 }
 
@@ -20,15 +21,17 @@ export const useAlertsStore = create<InitialState>()((set) => ({
     title: '',
     message: '',
     subMessage: '',
+    color: 'green',
     confirmAction: undefined,
 
-    open: ({type, title, message, subMessage, confirmAction=undefined}:AlertData) => {
+    open: ({type, title, message, subMessage, color='green', confirmAction=undefined}:AlertData) => {
         set({
             visible: true,
             type: type,
             title: title,
             message: message,
             subMessage: subMessage??'',
+            color,
             confirmAction
         });
     },

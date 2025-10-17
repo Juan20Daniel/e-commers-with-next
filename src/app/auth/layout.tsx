@@ -1,9 +1,12 @@
-'use client';
-
+import { auth } from "@/auth.config";
 import { AlertMessageTop } from "@/components";
+import { redirect } from "next/navigation";
 
-export default function AuthLayout({children}: {children: React.ReactNode;}) {
- 
+export default async function AuthLayout({children}: {children: React.ReactNode;}) {
+  const session = await auth();
+  if(session?.user) {
+    redirect('/')
+  }
   return (
     <main className="relative flex justify-center">
       <div className="w-full sm:w-[450px] px-10">

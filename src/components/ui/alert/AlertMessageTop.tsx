@@ -4,7 +4,7 @@ import clsx from "clsx";
 import { useEffect, useRef } from "react";
 
 export const AlertMessageTop = () => {
-    const { visible, type, message, close } = useAlertsStore(state => state);
+    const { visible, type, message, color, close } = useAlertsStore(state => state);
     const timerRef = useRef<NodeJS.Timeout>(null);
     useEffect(() => {
         if(type === 'alert-message-top') {
@@ -28,12 +28,21 @@ export const AlertMessageTop = () => {
                 )
             }
         >
-            <div className="min-w-[200px] max-w-[500px] w-full bg-green-700 rounded-2xl flex flex-row shadow-2xl justify-between items-center p-3">
+            <div className={clsx("min-w-[200px] max-w-[500px] w-full  rounded-2xl flex flex-row shadow-2xl justify-between items-center p-3",
+                color === 'green' && "bg-green-700",
+                color === "red" && "bg-red-800"
+            )}>
                 <p className={clsx("text-sm text-white sm:text-base")}>{message}</p>
-                <button onClick={() => {
-                    close();
-                    clearTimer();
-                }} className="cursor-pointer py-1 px-3 rounded-2xl bg-green-800 text-white outline-0 active:bg-green-700 transition-all ml-1">
+                <button 
+                    onClick={() => {
+                        close();
+                        clearTimer();
+                    }} 
+                    className={clsx("cursor-pointer py-1 px-3 rounded-2xl  text-white outline-0 transition-all ml-1",
+                        color === 'green' && "bg-green-800 active:bg-green-700",
+                        color === "red" && "bg-red-900 active:bg-red-800"
+                    )}
+                >
                     Cerrar
                 </button>
             </div>

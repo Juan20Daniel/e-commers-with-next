@@ -1,10 +1,18 @@
 'use client';
-import { useActionState } from 'react';
+import { useActionState, useEffect } from 'react';
 import Link from 'next/link';
 import { authenticate } from '@/app/actions/auth/login';
+import { useAlertsStore } from '@/store/ui/alerts-store';
+import clsx from 'clsx';
 
 export default function LoginForm() {
     const [state, formAction, isPending] = useActionState(authenticate, undefined);
+    const openAlert = useAlertsStore(state => state.open);
+    useEffect(() => {
+        if(state) {
+            openAlert({type:'alert-message-top', message:'Correo o contraseña incorrectos', color:'red'})
+        }
+    },[state]);
     console.log({state});
     return (
         <form action={formAction} className="flex flex-col">
@@ -20,7 +28,16 @@ export default function LoginForm() {
                 name="password"
                 type="password"
             />
-            <button type="submit" className="btn-primary">Ingresar</button>
+            <button 
+                type="submit" 
+                disabled={isPending} 
+                className={clsx({
+                    "btn-primary": !isPending, 
+                    "btn-disable": isPending 
+                })}
+            >
+                Ingresar
+            </button>
             <div className="flex items-center my-5">
                 <div className="flex-1 border-t border-gray-500"></div>
                 <div className="px-2 text-gray-800">O</div>

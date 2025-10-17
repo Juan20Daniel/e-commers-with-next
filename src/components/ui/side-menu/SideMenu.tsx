@@ -1,5 +1,4 @@
 'use client'
-import Link from "next/link";
 import { useSideMenuStore } from "@/store";
 import { 
   IoCloseOutline, 
@@ -14,6 +13,7 @@ import {
   IoWomanOutline
 } from "react-icons/io5";
 import { LiaChildSolid } from "react-icons/lia";
+import { OptionMenu } from "./OptionMenu";
 
 export const SideMenu = () => {
   const isSideMenuOpen = useSideMenuStore(state => state.isSideMenuOpen);
@@ -38,81 +38,39 @@ export const SideMenu = () => {
             className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
           />
         </div>
-        <Link 
-          href="/"
-          className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-        >
+        <OptionMenu value="Perfil" link="/profile">
           <IoPersonOutline size={20} />
-          <span className="text-md">Perfil</span>
-        </Link>
-        <Link 
-          href="/"
-          className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-        >
+        </OptionMenu>
+        <OptionMenu value="Ordenes" link="/">
           <IoTicketOutline size={20} />
-          <span className="text-md">Ordenes</span>
-        </Link>
-        <Link 
-          href="/"
-          className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-        >
+        </OptionMenu>
+        <OptionMenu value="Ingresar" link="/">
           <IoLogInOutline size={20} />
-          <span className="text-md">Ingresar</span>
-        </Link>
-        <Link 
-          href="/"
-          className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-        >
+        </OptionMenu>
+        <OptionMenu value="Salir" link="/">
           <IoLogOutOutline size={20} />
-          <span className="text-md">Salir</span>
-        </Link>
+        </OptionMenu>
         <div className="w-full h-px bg-gray-300 my-3" />
-        <Link 
-          href="/"
-          className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-        >
+        <OptionMenu value="Todos los productos" link="/">
           <IoShirtOutline size={20} />
-          <span className="text-md">Todos los productos</span>
-        </Link>
-         
-          <div className="sm:hidden">
-            <Link 
-              href="/category/men"
-              className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-            >
-              <IoManOutline size={20} />
-              <span className="text-md">Hombres</span>
-            </Link>
-            <Link 
-              href="/category/women"
-              className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-            >
-              <IoWomanOutline size={20} />
-              <span className="text-md">Mujeres</span>
-            </Link>
-            <Link 
-              href="/category/kid"
-              className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-            >
-              <LiaChildSolid size={20} />
-              <span className="text-md">Niños</span>
-            </Link>
-          </div>
-        
-        <Link 
-          href="/"
-          className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-        >
+        </OptionMenu>
+        <div className="sm:hidden">
+          <OptionMenu value="Hombres" link="/category/men">
+            <IoManOutline size={20} />
+          </OptionMenu>
+          <OptionMenu value="Mujeres" link="/category/women">
+            <IoWomanOutline size={20} />
+          </OptionMenu>
+          <OptionMenu value="Niños" link="/category/kid">
+            <LiaChildSolid size={20} />
+          </OptionMenu>
+        </div>
+        <OptionMenu value="Ordenes" link="/">
           <IoTicketOutline size={20} />
-          <span className="text-md">Ordenes</span>
-        </Link>
-        <Link 
-          href="/"
-          className="flex items-center mt-2 p-2 gap-3 hover:bg-gray-100 rounded transition-all"
-        >
+        </OptionMenu>
+        <OptionMenu value="Usuarios" link="/">
           <IoPeopleOutline size={20} />
-          <span className="text-md">Usuarios</span>
-        </Link>
+        </OptionMenu>
       </nav>
     </>
   )
