@@ -14,10 +14,14 @@ import {
 } from "react-icons/io5";
 import { LiaChildSolid } from "react-icons/lia";
 import { OptionMenu } from "./OptionMenu";
+import { logout } from "@/app/actions/auth/logout";
+import { useRedirectPath } from "@/store/auth/redirect-path";
 
 export const SideMenu = () => {
   const isSideMenuOpen = useSideMenuStore(state => state.isSideMenuOpen);
   const closeSideMenu = useSideMenuStore(state => state.closeSideMenu);
+  const getRedirectPath = useRedirectPath(state => state.getRedirectPath);
+
   return (
     <>
       {isSideMenuOpen && <div className='fixed top-0 left-0 w-screen h-screen z-5 bg-[#0000003a]' />}
@@ -38,7 +42,7 @@ export const SideMenu = () => {
             className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
           />
         </div>
-        <OptionMenu value="Perfil" link="/profile">
+        <OptionMenu value="Perfil" link="/profile" action={() => getRedirectPath("/profile")}>
           <IoPersonOutline size={20} />
         </OptionMenu>
         <OptionMenu value="Ordenes" link="/">
@@ -47,7 +51,7 @@ export const SideMenu = () => {
         <OptionMenu value="Ingresar" link="/">
           <IoLogInOutline size={20} />
         </OptionMenu>
-        <OptionMenu value="Salir" link="/">
+        <OptionMenu value="Salir" action={() => logout()}>
           <IoLogOutOutline size={20} />
         </OptionMenu>
         <div className="w-full h-px bg-gray-300 my-3" />

@@ -3,17 +3,29 @@ import { useActionState, useEffect } from 'react';
 import Link from 'next/link';
 import { authenticate } from '@/app/actions/auth/login';
 import { useAlertsStore } from '@/store/ui/alerts-store';
+import { useRouter } from 'next/navigation';
+import { useRedirectPath } from '@/store/auth/redirect-path';
 import clsx from 'clsx';
 
 export default function LoginForm() {
-    const [state, formAction, isPending] = useActionState(authenticate, undefined);
+    const [errorMessage, formAction, isPending] = useActionState(authenticate, undefined);
+    const router = useRouter();
+    const redirectPath = useRedirectPath(state => state.redirectPath);
     const openAlert = useAlertsStore(state => state.open);
+    
     useEffect(() => {
-        if(state) {
-            openAlert({type:'alert-message-top', message:'Correo o contraseña incorrectos', color:'red'})
+        if(errorMessage === 'Success') {
+            router.replace(redirectPath??'/');
         }
-    },[state]);
-    console.log({state});
+        if (errorMessage && errorMessage !== 'Success') {
+            openAlert({
+                type:'alert-message-top', 
+                message:'Correo o contraseña incorrectos', 
+                color:'red'
+            });
+        }
+    }, [errorMessage]);
+    
     return (
         <form action={formAction} className="flex flex-col">
             <label htmlFor="email">Correo electrónico</label>
