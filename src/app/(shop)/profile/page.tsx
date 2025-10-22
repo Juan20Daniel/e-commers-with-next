@@ -4,7 +4,10 @@ import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
     const session = await auth();
-
+    //En el curso actualmente
+    // if(!session?.user) {
+    //     redirect('/');
+    // }
     if(!session?.user) {
         redirect('/auth/login');
     }

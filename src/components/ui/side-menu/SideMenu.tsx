@@ -14,14 +14,15 @@ import {
 } from "react-icons/io5";
 import { LiaChildSolid } from "react-icons/lia";
 import { OptionMenu } from "./OptionMenu";
-import { logout } from "@/app/actions/auth/logout";
 import { useRedirectPath } from "@/store/auth/redirect-path";
+import { useSession, signOut } from "next-auth/react";
 
 export const SideMenu = () => {
   const isSideMenuOpen = useSideMenuStore(state => state.isSideMenuOpen);
   const closeSideMenu = useSideMenuStore(state => state.closeSideMenu);
   const getRedirectPath = useRedirectPath(state => state.getRedirectPath);
-
+  const { data: session} = useSession();
+  const isAutenticated = !!session?.user;
   return (
     <>
       {isSideMenuOpen && <div className='fixed top-0 left-0 w-screen h-screen z-5 bg-[#0000003a]' />}
@@ -48,12 +49,16 @@ export const SideMenu = () => {
         <OptionMenu value="Ordenes" link="/">
           <IoTicketOutline size={20} />
         </OptionMenu>
-        <OptionMenu value="Ingresar" link="/">
-          <IoLogInOutline size={20} />
-        </OptionMenu>
-        <OptionMenu value="Salir" action={() => logout()}>
-          <IoLogOutOutline size={20} />
-        </OptionMenu>
+        {!isAutenticated && 
+          <OptionMenu value="Ingresar" link="/auth/login">
+            <IoLogInOutline size={20} />
+          </OptionMenu>
+        }
+        {isAutenticated &&  
+          <OptionMenu value="Salir" action={() => signOut()}>
+            <IoLogOutOutline size={20} />
+          </OptionMenu>
+        }
         <div className="w-full h-px bg-gray-300 my-3" />
         <OptionMenu value="Todos los productos" link="/">
           <IoShirtOutline size={20} />

@@ -5,6 +5,7 @@ import { authenticate } from '@/app/actions/auth/login';
 import { useAlertsStore } from '@/store/ui/alerts-store';
 import { useRouter } from 'next/navigation';
 import { useRedirectPath } from '@/store/auth/redirect-path';
+import { signIn } from "next-auth/react";
 import clsx from 'clsx';
 
 export default function LoginForm() {
@@ -15,7 +16,8 @@ export default function LoginForm() {
     
     useEffect(() => {
         if(errorMessage === 'Success') {
-            router.replace(redirectPath??'/');
+            // router.replace(redirectPath??'/');
+            signIn();
         }
         if (errorMessage && errorMessage !== 'Success') {
             openAlert({

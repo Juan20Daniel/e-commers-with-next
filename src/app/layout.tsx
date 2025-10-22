@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { interLight } from "@/config/fonts";
 import { ScrollProvider } from "@/context/ScrollContext";
 import "./globals.css";
+import { Provider } from "@/components/providers/Provider";
 
 export const metadata: Metadata = {
   title: {
@@ -21,9 +22,11 @@ export default function RootLayout({
       <body
         className={`${interLight.className} antialiased`}
       >
-        <ScrollProvider>
-          {children}
-        </ScrollProvider>
+        <Provider>
+          <ScrollProvider>
+            {children}
+          </ScrollProvider>
+        </Provider>
       </body>
     </html>
   );
