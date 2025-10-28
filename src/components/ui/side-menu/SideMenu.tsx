@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useSideMenuStore } from "@/store";
 import { 
   IoCloseOutline, 
@@ -23,6 +23,7 @@ export const SideMenu = () => {
   const getRedirectPath = useRedirectPath(state => state.getRedirectPath);
   const { data: session} = useSession();
   const isAutenticated = !!session?.user;
+  const isAdmin = session?.user.role === 'admin';
   return (
     <>
       {isSideMenuOpen && <div className='fixed top-0 left-0 w-screen h-screen z-5 bg-[#0000003a]' />}
@@ -43,18 +44,22 @@ export const SideMenu = () => {
             className="w-full bg-gray-50 rounded pl-10 py-1 pr-10 border-b-2 text-xl border-gray-200 focus:outline-none focus:border-blue-500"
           />
         </div>
-        <OptionMenu value="Perfil" link="/profile" action={() => getRedirectPath("/profile")}>
-          <IoPersonOutline size={20} />
-        </OptionMenu>
-        <OptionMenu value="Ordenes" link="/">
-          <IoTicketOutline size={20} />
-        </OptionMenu>
+        {isAutenticated &&
+          <>
+            <OptionMenu value="Perfil" link="/profile" action={() => getRedirectPath("/profile")}>
+              <IoPersonOutline size={20} />
+            </OptionMenu>
+            <OptionMenu value="Ordenes" link="/">
+              <IoTicketOutline size={20} />
+            </OptionMenu>
+          </>
+        }
         {!isAutenticated && 
           <OptionMenu value="Ingresar" link="/auth/login">
             <IoLogInOutline size={20} />
           </OptionMenu>
         }
-        {isAutenticated &&  
+        {isAutenticated && 
           <OptionMenu value="Salir" action={() => signOut()}>
             <IoLogOutOutline size={20} />
           </OptionMenu>
@@ -64,22 +69,26 @@ export const SideMenu = () => {
           <IoShirtOutline size={20} />
         </OptionMenu>
         <div className="sm:hidden">
-          <OptionMenu value="Hombres" link="/category/men">
+          <OptionMenu value="Hombres" link="/gender/men">
             <IoManOutline size={20} />
           </OptionMenu>
-          <OptionMenu value="Mujeres" link="/category/women">
+          <OptionMenu value="Mujeres" link="/gender/women">
             <IoWomanOutline size={20} />
           </OptionMenu>
-          <OptionMenu value="Niños" link="/category/kid">
+          <OptionMenu value="Niños" link="/gender/kid">
             <LiaChildSolid size={20} />
           </OptionMenu>
         </div>
-        <OptionMenu value="Ordenes" link="/">
-          <IoTicketOutline size={20} />
-        </OptionMenu>
-        <OptionMenu value="Usuarios" link="/">
-          <IoPeopleOutline size={20} />
-        </OptionMenu>
+        {(isAutenticated && isAdmin) &&
+          <>
+            <OptionMenu value="Ordenes" link="/">
+              <IoTicketOutline size={20} />
+            </OptionMenu>
+            <OptionMenu value="Usuarios" link="/">
+              <IoPeopleOutline size={20} />
+            </OptionMenu>
+          </>
+        }
       </nav>
     </>
   )
