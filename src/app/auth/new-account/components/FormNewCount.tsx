@@ -3,6 +3,11 @@ import React from 'react';
 import Link from 'next/link';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import clsx from 'clsx';
+import { registerUser } from '@/app/actions/auth/register';
+import { useAlertsStore } from '@/store/ui/alerts-store';
+import { login } from '@/app/actions/auth/login';
+import { useRouter } from 'next/navigation';
+import { useRedirectPath } from '@/store/auth/redirect-path';
 
 
 type Inputs = {
@@ -13,9 +18,22 @@ type Inputs = {
 
 export const FormNewCount = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
+    const redirectPath = useRedirectPath(state => state.redirectPath);
+    
+    const openAlert = useAlertsStore(state => state.open);
     const onSubmit:SubmitHandler<Inputs> = async (data) => {
         const { fullname, email, password } = data;
-        console.log({ fullname, email, password } )
+        const result = await registerUser(fullname, email, password);
+        if(!result.ok) {
+            openAlert({
+                type:'alert-message-top',
+                message: result.message,
+                color: 'red'
+            });
+            return;
+        }
+        await login(email, password);
+        window.location.replace(`${redirectPath??'/'}`);
     }
 
     return (
