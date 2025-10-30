@@ -13,7 +13,7 @@ interface Props {
 }
 
 export const Select = ({state, options:initialState,label,isRequired=false,setState}:Props) => {
-    const [ options, setOptions ] = useState(initialState)
+    const [ options, setOptions ] = useState(initialState);
     const [ showOptions, setShowOptions ] = useState(false);
     const elementRef = useRef<HTMLDivElement|null>(null);
     useEffect(() => {
@@ -56,7 +56,7 @@ export const Select = ({state, options:initialState,label,isRequired=false,setSt
             <button
                 type='button'
                 onClick={handleShowOptions} 
-                className={`w-full h-[42px] py-2 flex outline-blue-600 border-[1px] items-center justify-between text-start px-4 rounded-md cursor-pointer
+                className={`w-full h-[42px] py-2 flex outline-blue-600 border items-center justify-between text-start px-4 rounded-md cursor-pointer
                     ${showOptions 
                         ? 'outline border-blue-600'
                         : isRequired 
@@ -66,7 +66,7 @@ export const Select = ({state, options:initialState,label,isRequired=false,setSt
                 `}
             >
                 <span className={`absolute left-4 top-[-15px] bg-white transition-all
-                    ${(!showOptions && state.value === '') && 'translate-y-[24px]'}
+                    ${(!showOptions && state.value === '') && 'translate-y-6'}
                     ${showOptions 
                         ?   'text-blue-800'
                         :   isRequired
@@ -80,7 +80,7 @@ export const Select = ({state, options:initialState,label,isRequired=false,setSt
                 <IoChevronDown className='absolute right-3 top-[11px] w-[30px]' size={20} />
             </button>
            {showOptions &&
-                <ul className='absolute w-full max-h-[242px] top-[calc(100%+8px)] bg-white border-[1px] border-gray-400 rounded-md z-1 overflow-y-auto'>
+                <ul className='absolute w-full max-h-[242px] top-[calc(100%+8px)] bg-white border border-gray-400 rounded-md z-1 overflow-y-auto'>
                     {options.map((option,index) => (
                         <li 
                             key={option.id} 
@@ -94,7 +94,7 @@ export const Select = ({state, options:initialState,label,isRequired=false,setSt
                 </ul>
             }
             {isRequired && 
-                <div className="h-[24px]">
+                <div className="h-6">
                     <p className='text-red-700'>Este campo es requerido</p>
                 </div>
             }

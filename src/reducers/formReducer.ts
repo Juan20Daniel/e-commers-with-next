@@ -3,8 +3,8 @@ import { FormActionTypes } from "./actionTypes";
 const expretions:Record<string, RegExp> = {
     fullname: /^[a-zA-ZñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
     lastname: /^[a-zA-ZñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
-    address: /^[a-zA-ZñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
-    opAddress: /^[a-zA-ZñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
+    address: /^[a-zA-Z\.,ñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
+    opAddress: /^[a-zA-Z\.,ñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
     postalCode: /^[0-9]{5}$/,
     city: /^[a-zA-ZñÑáÁéÉíÍóÓúÚ ]{5,20}$/,
     country: /^[a-zA-ZñÑáÁéÉíÍóÓúÚ ]{5,20}$/,

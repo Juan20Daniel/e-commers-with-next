@@ -12,7 +12,7 @@ export const authConfig = {
 
   callbacks: {
     jwt({token, user}) {
-      console.log({ user})
+      // console.log({ user})
       if(user) {
         token.data = user;
       }

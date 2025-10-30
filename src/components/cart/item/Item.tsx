@@ -54,7 +54,7 @@ export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
                     <div className="absolute bottom-[-9px] w-full flex justify-center">
                         <button
                             onClick={() => confirmDeletion()}
-                            className="bg-white text-black border-[1px] border-gray-300 text-[8px] px-2 py-1 rounded-3xl cursor-pointer hover:bg-red-800 active:bg-red-500 hover:text-white transition-all sm:text-[10px] sm:px-3"
+                            className="bg-white text-black border border-gray-300 text-[8px] px-2 py-1 rounded-3xl cursor-pointer hover:bg-red-800 active:bg-red-500 hover:text-white transition-all sm:text-[10px] sm:px-3"
                         >
                             Remover
                         </button>
@@ -71,13 +71,14 @@ export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
                 <span className="text-[10px] sm:text-[12px] xl:text-[13px]">Talla: {product.size}</span>
                 <div className="h-[19px] flex gap-3">
                     <span className="text-[10px] sm:text-[12px] xl:text-[13px]">Cantidad:</span>
-                    {showQuantitySelector &&
-                        <QuantitySelector
-                            defaultCant={quantity}
-                            maxQuantity={product.inStock}
-                            sizeNum="small"
-                            onQuantityCanged={handleQuantity}
-                        />
+                    {showQuantitySelector 
+                        ?   <QuantitySelector
+                                defaultCant={quantity}
+                                maxQuantity={product.inStock}
+                                sizeNum="small"
+                                onQuantityCanged={handleQuantity}
+                            />
+                        :   <span className="text-[10px] sm:text-[12px] xl:text-[13px]">{quantity}</span>
                     }
                 </div>
             </div>
