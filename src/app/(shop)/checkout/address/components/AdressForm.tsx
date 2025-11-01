@@ -8,19 +8,13 @@ import { Input, Select } from '@/components';
 import { Checkbox } from '@/components/ui/checkbox/Checkbox';
 import { useAlertsStore } from '@/store/ui/alerts-store';
 
-const options:Option[] = [
-  {id:1, value:'Monterrrey', isSelected:false},
-  {id:2, value:'Polonioa', isSelected:false},
-  {id:3, value:'México', isSelected:false},
-  {id:4, value:'Colima', isSelected:false},
-  {id:5, value:'Manzanillo', isSelected:false},
-  {id:6, value:'Comala', isSelected:false},
-  {id:7, value:'Comala', isSelected:false},
-]
+interface Props {
+    countries:Option[]
+}
 
-export const AdressForm = () => {
+export const AdressForm = ({countries}:Props) => {
     const [ state, dispatch ] = useReducer(formReducer, initialState);
-    const [ select, setSelect ] = useState<Option>({id:1, value:'', isSelected:false});
+    const [ select, setSelect ] = useState<Option>({id:'1', value:'', isSelected:false});
     const openAlert = useAlertsStore(state => state.open);
     const router = useRouter();
     useEffect(() => {
@@ -158,8 +152,8 @@ export const AdressForm = () => {
             />
             <Select
                 state={select}
-                options={options}
-                defaultOption={options[0]}
+                options={countries}
+                defaultOption={countries[0]}
                 label='País'
                 setState={setSelect}
                 isRequired={

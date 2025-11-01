@@ -1,5 +1,5 @@
 export interface Option {
-    id:number, 
+    id:string, 
     value:string, 
     isSelected:boolean
 }
