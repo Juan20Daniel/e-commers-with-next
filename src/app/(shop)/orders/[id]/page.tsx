@@ -2,7 +2,7 @@ import { ListItems } from "@/components/cart/list-items/ListItems";
 import { OrderReview } from "@/components/cart/order-review/OrderReview";
 import { IoCardOutline } from "react-icons/io5";
 import clsx from "clsx";
-
+//Revisar porque no toma el valor del address del localstorage
 interface Props {
   params: Promise<{id:string}>
 }

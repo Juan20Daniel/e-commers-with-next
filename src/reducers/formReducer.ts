@@ -72,7 +72,19 @@ export const formReducer = (state:FormState, action:FormActionTypes) => {
                 }
             }
         case "RESET":
-            return initialState;
+            return {
+                values: action.form,
+                errors: {
+                    fullname: {status:null, valid:true},   
+                    lastname: {status:null, valid:true},
+                    address: {status:null, valid:true},
+                    opAddress: {status:null, valid:true},
+                    postalCode: {status:null, valid:true},
+                    city: {status:null, valid:true},
+                    country: {status:null, valid:true},
+                    phone: {status:null, valid:true}
+                }
+            }
         default:
             return state;
     }

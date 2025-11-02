@@ -7,6 +7,7 @@ import { formReducer, initialState } from '@/reducers/formReducer';
 import { Input, Select } from '@/components';
 import { Checkbox } from '@/components/ui/checkbox/Checkbox';
 import { useAlertsStore } from '@/store/ui/alerts-store';
+import { useAddressStorage } from '@/store/address/address-store';
 
 interface Props {
     countries:Option[]
@@ -15,11 +16,19 @@ interface Props {
 export const AdressForm = ({countries}:Props) => {
     const [ state, dispatch ] = useReducer(formReducer, initialState);
     const [ select, setSelect ] = useState<Option>({id:'1', value:'', isSelected:false});
+    const { address, saveAdderess } = useAddressStorage(state => state);
     const openAlert = useAlertsStore(state => state.open);
     const router = useRouter();
     useEffect(() => {
         handleSelect();
     },[select.value]);
+    useEffect(() => {
+        console.log(address)
+        dispatch({
+            type:'RESET',
+            form: address
+        });
+    },[]);
     const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
         dispatch({
             type:'CHANGE_INPUT',
@@ -48,6 +57,7 @@ export const AdressForm = ({countries}:Props) => {
         if(Object.values(formErrors).map(error => error.valid).includes(false)) {
             return openAlert({type:'alert-message-top', message:"Error en uno de los campos", color:'red'});
         }
+        saveAdderess(state.values);
         console.log(state.values);
         //return router.push('/checkout');
     }

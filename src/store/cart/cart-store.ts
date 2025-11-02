@@ -87,7 +87,7 @@ export const useCartStore = create<InitialState>()(
             }
         }),
         {
-            name:'teslo-shop',
+            name:'teslo-shop-cart',
             merge: (persisted, current) => {
                 if(!persisted) {
                     return deepMerge(current, {cart:[]}) as never;
