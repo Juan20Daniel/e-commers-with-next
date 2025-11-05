@@ -1,5 +1,5 @@
 'use client'
-import React, { FormEvent, useEffect, useReducer, useState } from 'react';
+import React, { FormEvent, useEffect, useLayoutEffect, useReducer, useState } from 'react';
 import Link from 'next/link';
 import { Option } from '@/interfaces/select-option.interface';
 import { useRouter } from 'next/navigation';
@@ -15,15 +15,17 @@ interface Props {
 
 export const AdressForm = ({countries}:Props) => {
     const [ state, dispatch ] = useReducer(formReducer, initialState);
-    const [ select, setSelect ] = useState<Option>({id:'1', value:'', isSelected:false});
+    const [ select, setSelect ] = useState('');
     const { address, saveAdderess } = useAddressStorage(state => state);
     const openAlert = useAlertsStore(state => state.open);
     const router = useRouter();
     useEffect(() => {
         handleSelect();
-    },[select.value]);
+    },[select]);
     useEffect(() => {
-        console.log(address)
+        console.log(state)
+    },[state])
+    useLayoutEffect(() => {
         dispatch({
             type:'RESET',
             form: address
@@ -40,7 +42,7 @@ export const AdressForm = ({countries}:Props) => {
         dispatch({
             type:'CHANGE_INPUT',
             field: 'country',
-            value: select.value
+            value: select
         });
     }
     const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
@@ -58,7 +60,7 @@ export const AdressForm = ({countries}:Props) => {
             return openAlert({type:'alert-message-top', message:"Error en uno de los campos", color:'red'});
         }
         saveAdderess(state.values);
-        console.log(state.values);
+        // console.log(state.values);
         //return router.push('/checkout');
     }
     const clearInput = (field:string) => {
@@ -163,7 +165,7 @@ export const AdressForm = ({countries}:Props) => {
             <Select
                 state={select}
                 options={countries}
-                defaultOption={countries[0]}
+                defaultOption={address.country}
                 label='País'
                 setState={setSelect}
                 isRequired={
