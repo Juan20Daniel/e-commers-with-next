@@ -1,19 +1,12 @@
+import { Address } from "./address-interface";
+
 export interface FormState {
-    values: FormStateValues,
+    values: Address,
     errors: Record<string, InputError>;
 }
 
-export interface FormStateValues {
-    fullname: string;   
-    lastname: string;
-    address: string;
-    opAddress: string;
-    postalCode: string;
-    city: string;
-    country: string;
-    phone: string;
-}
-interface InputError {
+
+export interface InputError {
     status:InputStatusError;
     valid:boolean;
 }

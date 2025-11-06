@@ -41,7 +41,6 @@ export const Select = ({
         }))
     },[options]);
     useEffect(() => {
-        console.log(defaultOption)
         if(defaultOption !== '') {
             setState(defaultOption);
             selectedOption(defaultOption);
@@ -55,7 +54,6 @@ export const Select = ({
     const handleShowOptions = () => {
         setShowOptions(!showOptions);
     }
-   
     const selectedOption = (optionSelected:string) => {
         setState(optionSelected);
         const result = options.map(option => {

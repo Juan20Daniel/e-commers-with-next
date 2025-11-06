@@ -1,17 +1,20 @@
-import { FormStateValues } from "@/interfaces/form-state.interface";
+
+import { Address } from "@/interfaces/address-interface";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface InitialState {
-    address: FormStateValues,
-    saveAdderess:(form:FormStateValues) => void;
+    address: Address;
+    rememberAddress: boolean;
+    saveAdderessLS:(form:Address) => void;
+    toggleRememberAddress: () => void;
 }
 
 export const useAddressStorage = create<InitialState>()(
     persist(
         (set, get) => ({
             address: {
-                fullname:'',   
+                firstname:'',   
                 lastname: '',
                 address: '',
                 opAddress:'',
@@ -20,8 +23,13 @@ export const useAddressStorage = create<InitialState>()(
                 country: '',
                 phone: '',
             },
-            saveAdderess:(form:FormStateValues) => {
+            rememberAddress: false,
+            saveAdderessLS:(form:Address) => {
                 set({address: form})
+            },
+            toggleRememberAddress:() => {
+                const { rememberAddress } = get();
+                set({rememberAddress:!rememberAddress});
             }
         }),
         {

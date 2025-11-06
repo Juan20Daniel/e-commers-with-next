@@ -1,7 +1,7 @@
-import { FormState } from "@/interfaces/form-state.interface";
+import { FormState, InputError } from "@/interfaces/form-state.interface";
 import { FormActionTypes } from "./actionTypes";
 const expretions:Record<string, RegExp> = {
-    fullname: /^[a-zA-ZñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
+    firstname: /^[a-zA-ZñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
     lastname: /^[a-zA-ZñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
     address: /^[a-zA-Z\.,ñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
     opAddress: /^[a-zA-Z\.,ñÑáÁéÉíÍóÓúÚ ]{3,30}$/,
@@ -13,7 +13,7 @@ const expretions:Record<string, RegExp> = {
 
 export const initialState:FormState = {
     values: {
-        fullname: '',
+        firstname: '',
         lastname: '',
         address: '',
         opAddress: '',
@@ -23,7 +23,7 @@ export const initialState:FormState = {
         phone: ''
     },
     errors: {
-        fullname: {status:null, valid:false},   
+        firstname: {status:null, valid:false},   
         lastname: {status:null, valid:false},
         address: {status:null, valid:false},
         opAddress: {status:null, valid:false},
@@ -32,6 +32,14 @@ export const initialState:FormState = {
         country: {status:null, valid:false},
         phone: {status:null, valid:false}
     }
+}
+
+const validInputs = ():Record<string, InputError> => {
+    const inputs:Record<string, InputError> = {}
+    for(let input in initialState.errors) {
+        inputs[input] = {status:null, valid:true}
+    }
+    return inputs;
 }
 
 export const formReducer = (state:FormState, action:FormActionTypes) => {
@@ -74,16 +82,7 @@ export const formReducer = (state:FormState, action:FormActionTypes) => {
         case "RESET":
             return {
                 values: action.form,
-                errors: {
-                    fullname: {status:null, valid:true},   
-                    lastname: {status:null, valid:true},
-                    address: {status:null, valid:true},
-                    opAddress: {status:null, valid:true},
-                    postalCode: {status:null, valid:true},
-                    city: {status:null, valid:true},
-                    country: {status:null, valid:true},
-                    phone: {status:null, valid:true}
-                }
+                errors: validInputs()
             }
         default:
             return state;

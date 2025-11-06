@@ -8,6 +8,7 @@ import { Input, Select } from '@/components';
 import { Checkbox } from '@/components/ui/checkbox/Checkbox';
 import { useAlertsStore } from '@/store/ui/alerts-store';
 import { useAddressStorage } from '@/store/address/address-store';
+import { saveAddressDB } from '@/app/actions/address/save-address';
 
 interface Props {
     countries:Option[]
@@ -16,15 +17,12 @@ interface Props {
 export const AdressForm = ({countries}:Props) => {
     const [ state, dispatch ] = useReducer(formReducer, initialState);
     const [ select, setSelect ] = useState('');
-    const { address, saveAdderess } = useAddressStorage(state => state);
+    const { address, rememberAddress, saveAdderessLS } = useAddressStorage(state => state);
     const openAlert = useAlertsStore(state => state.open);
     const router = useRouter();
     useEffect(() => {
         handleSelect();
     },[select]);
-    useEffect(() => {
-        console.log(state)
-    },[state])
     useLayoutEffect(() => {
         dispatch({
             type:'RESET',
@@ -45,7 +43,7 @@ export const AdressForm = ({countries}:Props) => {
             value: select
         });
     }
-    const handleSubmit = (e:FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         dispatch({
             type:'VALIDATE_INPUTS'
@@ -55,14 +53,19 @@ export const AdressForm = ({countries}:Props) => {
         if(state.values.opAddress === '') {
             delete formErrors["opAddress"];
         }
-
-        if(Object.values(formErrors).map(error => error.valid).includes(false)) {
+        const thereAreErrors = Object.values(formErrors).map(error => error.valid).includes(false)
+        if(thereAreErrors) {
             return openAlert({type:'alert-message-top', message:"Error en uno de los campos", color:'red'});
         }
-        saveAdderess(state.values);
+        if(rememberAddress && !thereAreErrors) {
+            saveAdderessLS(state.values);
+            const countryid = countries.find(country => country.value === select);
+            await saveAddressDB(state.values, countryid!.id);
+        }
         // console.log(state.values);
         //return router.push('/checkout');
     }
+
     const clearInput = (field:string) => {
         dispatch({
           type:'CLEAR_INPUT',
@@ -72,17 +75,17 @@ export const AdressForm = ({countries}:Props) => {
     return (
         <form className="grid grid-cols-1 gap-4 px-4 pb-10 sm:gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
             <Input 
-                id='fullname' 
+                id='firstname' 
                 label='Nombres' 
                 type='text'
                 errorMessage={
-                    state.errors.fullname.status === 'empty' 
+                    state.errors.firstname.status === 'empty' 
                         ? "El campo nombres es requerido"
-                        : state.errors.fullname.status === 'invalid'
+                        : state.errors.firstname.status === 'invalid'
                             ? 'El nombre no es válido'
                             : undefined
                 }
-                value={state.values.fullname} 
+                value={state.values.firstname} 
                 onChange={handleChange}
                 clearInput={clearInput}
             />
@@ -155,7 +158,7 @@ export const AdressForm = ({countries}:Props) => {
                 errorMessage={
                     state.errors.city.status === 'empty' 
                         ? "La ciudad es requerida"
-                        : state.errors.fullname.status === 'invalid'
+                        : state.errors.city.status === 'invalid'
                             ? 'La ciudad no es válida'
                             : undefined
                 }
