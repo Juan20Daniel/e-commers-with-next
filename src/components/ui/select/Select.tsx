@@ -40,12 +40,13 @@ export const Select = ({
             return 0
         }))
     },[options]);
+   
     useEffect(() => {
         if(defaultOption !== '') {
             setState(defaultOption);
             selectedOption(defaultOption);
         }
-    },[]);
+    },[defaultOption]);
     const hideOptions = (ev:MouseEvent) => {
         if(elementRef.current && !elementRef.current.contains(ev.target as Node)) {
             setShowOptions(false);

@@ -7,7 +7,7 @@ interface InitialState {
     address: Address;
     rememberAddress: boolean;
     saveAdderessLS:(form:Address) => void;
-    toggleRememberAddress: () => void;
+    toggleRememberAddress: (rememberAddress:boolean) => void;
 }
 
 export const useAddressStorage = create<InitialState>()(
@@ -27,9 +27,8 @@ export const useAddressStorage = create<InitialState>()(
             saveAdderessLS:(form:Address) => {
                 set({address: form})
             },
-            toggleRememberAddress:() => {
-                const { rememberAddress } = get();
-                set({rememberAddress:!rememberAddress});
+            toggleRememberAddress:(rememberAddress:boolean) => {
+                set({rememberAddress:rememberAddress});
             }
         }),
         {

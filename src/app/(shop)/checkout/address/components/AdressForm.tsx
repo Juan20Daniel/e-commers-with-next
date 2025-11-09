@@ -1,5 +1,5 @@
 'use client'
-import React, { FormEvent, useEffect, useLayoutEffect, useReducer, useState } from 'react';
+import React, { FormEvent, useLayoutEffect, useReducer, useState } from 'react';
 import Link from 'next/link';
 import { Option } from '@/interfaces/select-option.interface';
 import { useRouter } from 'next/navigation';
@@ -9,6 +9,8 @@ import { Checkbox } from '@/components/ui/checkbox/Checkbox';
 import { useAlertsStore } from '@/store/ui/alerts-store';
 import { useAddressStorage } from '@/store/address/address-store';
 import { saveAddressDB } from '@/app/actions/address/save-address';
+import { getAddress } from '@/app/actions/address/get-address';
+import { Address } from '@/interfaces/address-interface';
 
 interface Props {
     countries:Option[]
@@ -17,25 +19,33 @@ interface Props {
 export const AdressForm = ({countries}:Props) => {
     const [ state, dispatch ] = useReducer(formReducer, initialState);
     const [ select, setSelect ] = useState('');
-    const { address, rememberAddress, saveAdderessLS } = useAddressStorage(state => state);
+    const { address, rememberAddress, saveAdderessLS, toggleRememberAddress } = useAddressStorage(state => state);
     const openAlert = useAlertsStore(state => state.open);
     const router = useRouter();
-    useEffect(() => {
-        handleSelect();
-    },[select]);
     useLayoutEffect(() => {
+        getAdderssFromServices();
+    },[]);
+    const getAdderssFromServices = async () => {
+        let aux_address:Address | null = null;
+        if(address.firstname !== '') {
+            aux_address = address
+        } else {
+            aux_address = await getAddress();
+        }
+        toggleRememberAddress(!!aux_address);
+        
         dispatch({
             type:'RESET',
-            form: address
+            form: aux_address??initialState.values
         });
-    },[]);
+    }
     const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
         dispatch({
             type:'CHANGE_INPUT',
             field: event.target.name,
             value: event.target.value
         });
-    }
+    }//Buscar la manera de actualizar el valor del select desde adentro del componente
     const handleSelect = () => {
         dispatch({
             type:'CHANGE_INPUT',
@@ -62,7 +72,7 @@ export const AdressForm = ({countries}:Props) => {
             const countryid = countries.find(country => country.value === select);
             await saveAddressDB(state.values, countryid!.id);
         }
-        // console.log(state.values);
+        console.log(state.values);
         //return router.push('/checkout');
     }
 
@@ -168,7 +178,7 @@ export const AdressForm = ({countries}:Props) => {
             <Select
                 state={select}
                 options={countries}
-                defaultOption={address.country}
+                defaultOption={state.values.country}
                 label='País'
                 setState={setSelect}
                 isRequired={
