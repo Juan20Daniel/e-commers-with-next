@@ -1,24 +1,24 @@
 'use client'
 import { Option } from '@/interfaces/select-option.interface';
-import { useState, useEffect, useRef, Dispatch, SetStateAction } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { IoChevronDown } from 'react-icons/io5';
 
 interface Props {
+    id: string;
     state: string;
     options: Option[];
     label: string;
-    defaultOption?:string;
     isRequired: boolean;
-    setState: Dispatch<SetStateAction<string>>;
+    onChange: (event:React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Select = ({
+    id,
     state, 
     options:initialState,
     label,
     isRequired=false,
-    defaultOption='',
-    setState
+    onChange
 }:Props) => {
     const [ options, setOptions ] = useState(initialState);
     const [ showOptions, setShowOptions ] = useState(false);
@@ -42,11 +42,10 @@ export const Select = ({
     },[options]);
    
     useEffect(() => {
-        if(defaultOption !== '') {
-            setState(defaultOption);
-            selectedOption(defaultOption);
+        if(state !== '') {
+            selectedOption(state);
         }
-    },[defaultOption]);
+    },[state]);
     const hideOptions = (ev:MouseEvent) => {
         if(elementRef.current && !elementRef.current.contains(ev.target as Node)) {
             setShowOptions(false);
@@ -55,8 +54,10 @@ export const Select = ({
     const handleShowOptions = () => {
         setShowOptions(!showOptions);
     }
-    const selectedOption = (optionSelected:string) => {
-        setState(optionSelected);
+    const selectedOption = (optionSelected:string, event?:React.ChangeEvent<HTMLInputElement>) => {
+        if(event) {
+            onChange(event)
+        }
         const result = options.map(option => {
             return option.value===optionSelected
                 ? {...option, isSelected:true}
@@ -67,7 +68,9 @@ export const Select = ({
     return (
         <div ref={elementRef} className='relative w-full h-[66px] rounded-md'>
             <button
+                name={id}
                 type='button'
+                value={state}
                 onClick={handleShowOptions} 
                 className={`w-full h-[42px] py-2 flex outline-blue-600 border items-center justify-between text-start px-4 rounded-md cursor-pointer
                     ${showOptions 
@@ -100,9 +103,11 @@ export const Select = ({
                             className={`${option.isSelected && 'bg-gray-200'} cursor-pointer ${index===0 && 'rounded-tl-md rounded-tr-md'} ${index === options.length-1 && 'rounded-bl-md rounded-br-md'}  hover:bg-gray-100`}
                         >
                             <button 
-                                type='button' 
-                                onClick={() => {
-                                    selectedOption(option.value)
+                                type='button'
+                                name={id}
+                                value={option.value}
+                                onClick={(event:any) => {
+                                    selectedOption(option.value, event)
                                     handleShowOptions();
                                 }}
                                 className='cursor-pointer px-4 text-start py-2 w-full'

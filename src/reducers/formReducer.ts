@@ -79,11 +79,13 @@ export const formReducer = (state:FormState, action:FormActionTypes) => {
                     [action.field]:{...state.errors[action.field], valid:false}
                 }
             }
-        case "RESET":
+        case "INITIALIZER":
             return {
                 values: action.form,
                 errors: validInputs()
             }
+        case "RESET": 
+            return {...initialState}
         default:
             return state;
     }

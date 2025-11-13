@@ -19,6 +19,7 @@ export const Input = ({id,label,type,value,max,errorMessage,onChange,clearInput}
                 id={id} 
                 name={id}
                 value={value}
+                autoComplete="new-password"
                 type='text'
                 onChange={(event:React.ChangeEvent<HTMLInputElement>) => {
                     if(type!=='number') return onChange(event);

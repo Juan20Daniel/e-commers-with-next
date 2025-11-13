@@ -1,5 +1,5 @@
 'use client'
-import React, { FormEvent, useLayoutEffect, useReducer, useState } from 'react';
+import React, { FormEvent, useLayoutEffect, useReducer, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { Option } from '@/interfaces/select-option.interface';
 import { useRouter } from 'next/navigation';
@@ -7,36 +7,38 @@ import { formReducer, initialState } from '@/reducers/formReducer';
 import { Input, Select } from '@/components';
 import { Checkbox } from '@/components/ui/checkbox/Checkbox';
 import { useAlertsStore } from '@/store/ui/alerts-store';
-import { useAddressStorage } from '@/store/address/address-store';
 import { saveAddressDB } from '@/app/actions/address/save-address';
 import { getAddress } from '@/app/actions/address/get-address';
 import { Address } from '@/interfaces/address-interface';
+import { removeAddress } from '@/app/actions/address/remove-address';
 
 interface Props {
     countries:Option[]
 }
 
 export const AdressForm = ({countries}:Props) => {
+    const [ rememberAddress, setRememberAddress ] = useState(false);
     const [ state, dispatch ] = useReducer(formReducer, initialState);
-    const [ select, setSelect ] = useState('');
-    const { address, rememberAddress, saveAdderessLS, toggleRememberAddress } = useAddressStorage(state => state);
     const openAlert = useAlertsStore(state => state.open);
     const router = useRouter();
     useLayoutEffect(() => {
-        getAdderssFromServices();
+        getAdderssFromDB();
     },[]);
-    const getAdderssFromServices = async () => {
-        let aux_address:Address | null = null;
-        if(address.firstname !== '') {
-            aux_address = address
-        } else {
-            aux_address = await getAddress();
+    useEffect(() => {
+        console.log(state)
+    },[state]);
+
+    const getAdderssFromDB = async () => {
+        let address: Address | null = await getAddress();
+        if(address) {
+            setRememberAddress(true);
+            return dispatch({
+                type:'INITIALIZER',
+                form: address??initialState.values
+            });
         }
-        toggleRememberAddress(!!aux_address);
-        
         dispatch({
             type:'RESET',
-            form: aux_address??initialState.values
         });
     }
     const handleChange = (event:React.ChangeEvent<HTMLInputElement>) => {
@@ -44,13 +46,6 @@ export const AdressForm = ({countries}:Props) => {
             type:'CHANGE_INPUT',
             field: event.target.name,
             value: event.target.value
-        });
-    }//Buscar la manera de actualizar el valor del select desde adentro del componente
-    const handleSelect = () => {
-        dispatch({
-            type:'CHANGE_INPUT',
-            field: 'country',
-            value: select
         });
     }
     const handleSubmit = async (e:FormEvent<HTMLFormElement>) => {
@@ -68,9 +63,11 @@ export const AdressForm = ({countries}:Props) => {
             return openAlert({type:'alert-message-top', message:"Error en uno de los campos", color:'red'});
         }
         if(rememberAddress && !thereAreErrors) {
-            saveAdderessLS(state.values);
-            const countryid = countries.find(country => country.value === select);
+            const countryid = countries.find(country => country.value === state.values.country);
             await saveAddressDB(state.values, countryid!.id);
+        }
+        if(!rememberAddress) {
+            clearInputs();
         }
         console.log(state.values);
         //return router.push('/checkout');
@@ -81,6 +78,12 @@ export const AdressForm = ({countries}:Props) => {
           type:'CLEAR_INPUT',
           field:field
         });
+    }
+    const clearInputs = () => {
+        removeAddress();
+        dispatch({
+            type:'RESET',
+        })
     }
     return (
         <form className="grid grid-cols-1 gap-4 px-4 pb-10 sm:gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
@@ -176,11 +179,11 @@ export const AdressForm = ({countries}:Props) => {
                 clearInput={clearInput}
             />
             <Select
-                state={select}
+                id='country' 
+                state={state.values.country}
                 options={countries}
-                defaultOption={state.values.country}
                 label='País'
-                setState={setSelect}
+                onChange={handleChange}
                 isRequired={
                     (state.errors.country !== null) &&
                         state.errors.country.status === 'empty'
@@ -205,7 +208,10 @@ export const AdressForm = ({countries}:Props) => {
                 clearInput={clearInput}
             />
             <div className="flex gap-5 mb-2 items-center sm:flex-row sm:col-span-2">
-                <Checkbox />
+                <Checkbox 
+                    rememberAddress={rememberAddress}
+                    setRememberAddres={setRememberAddress}
+                />
                 <span>¿Recordar dirección?</span>
             </div>
             <div className="flex flex-col-reverse pt-10 gap-5 mb-2 sm:flex-row sm:justify-end sm:col-span-2">
