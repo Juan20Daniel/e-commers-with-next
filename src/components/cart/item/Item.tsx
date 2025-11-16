@@ -11,9 +11,10 @@ interface Props {
     product: CartProduct;
     canRemove:boolean;
     showQuantitySelector: boolean;
+    goToProduct?: boolean;
 }
 
-export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
+export const Item = ({product, canRemove, showQuantitySelector, goToProduct=true}:Props) => {
     const { open:openAlert, close:closeAlert } = useAlertsStore(state => state);
     const {removeProduct, updateProductQuantity} = useCartStore(state => state);
     const [ quantity, setQuantity ] = useState(0);
@@ -63,9 +64,12 @@ export const Item = ({product, canRemove, showQuantitySelector}:Props) => {
             </div>
             <div className="w-full flex flex-col justify-center gap-1 ml-2 xl:ml-5">
                 <div className="flex justify-between">
-                    <Link href={`/product/${product.slug}`} className="text-[12px] font-bold text-black sm:text-[15px] xl:text-[18px] hover:underline">
-                        {product.title}
-                    </Link>
+                    {goToProduct
+                        ?   <Link href={`/product/${product.slug}`} className="text-[12px] font-bold text-black sm:text-[15px] xl:text-[18px] hover:underline">
+                                {product.title}
+                            </Link>
+                        :   <span className="text-[12px] font-bold text-black sm:text-[15px] xl:text-[18px] select-none">{product.title}</span>
+                    }
                     <span className="text-[12px] font-bold ml-2 min-w-[65px] truncate sm:text-[14px] sm:min-w-[75px] xl:mr-10 xl:text-[15px]">${product.price*product.quantity}.00</span>
                 </div>
                 <span className="text-[10px] sm:text-[12px] xl:text-[13px]">Talla: {product.size}</span>

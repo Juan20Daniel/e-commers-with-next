@@ -1,5 +1,5 @@
 'use client';
-import { Spinner } from "@/components";
+import { Spinner, Title } from "@/components";
 import { ListItems } from "@/components/cart/list-items/ListItems";
 import { OrderSumary } from "@/components/cart/order-summary/OrderSumary";
 import { useCartStore } from "@/store/cart/cart-store";
@@ -10,14 +10,19 @@ export default function CartPage() {
   if(!cart) return <Spinner />;
   if(!cart.length) redirect('/empty');
   return (
-    <div className="flex flex-col items-center pt-5">
-      <h1 className='w-full max-w-[500px] px-4 text-3xl mb-5 lg:max-w-6xl'>
-        <span className="font-bold">Mi</span> Carrito
-      </h1>
-      <div className="w-full max-w-6xl flex flex-col items-center sm:min-h-[500px] lg:flex-row lg:items-start">
-        <ListItems />
-        <OrderSumary />
+    <>
+      <Title 
+        title="Mi Carrito" 
+        subTitle="Todos los pruductos agregados en mi carrito de compras"
+        boxStyles="flex flex-col items-center"
+        btnBack
+      />
+      <div className="flex flex-col items-center pt-5">
+        <div className="w-full max-w-6xl flex flex-col items-center sm:min-h-[500px] lg:flex-row lg:items-start">
+          <ListItems />
+          <OrderSumary />
+        </div>
       </div>
-    </div>
+    </>
   );
 }

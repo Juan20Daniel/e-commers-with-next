@@ -24,7 +24,7 @@ function LayoutContent({ children }: { children: React.ReactNode }) {
     <main
       ref={scrollRef}
       id="main-scroll"
-      className="border-b-1 h-screen min-h-screen w-screen min-w-xs overflow-auto relative"
+      className="border-b h-screen min-h-screen w-screen min-w-xs overflow-auto relative"
     >
       <TopMenu />
       <SideMenu />

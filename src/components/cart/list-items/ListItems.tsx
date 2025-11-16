@@ -8,10 +8,11 @@ import { useCartStore } from '@/store/cart/cart-store';
 interface Props {
   canRemove?:boolean;
   showQuantitySelector?:boolean;
+  goToPeoduct?: boolean;
   children?: React.ReactNode;
 }
 
-export const ListItems = ({canRemove=true, showQuantitySelector=true, children}:Props) => {
+export const ListItems = ({canRemove=true, showQuantitySelector=true, goToPeoduct=true, children}:Props) => {
   const cart = useCartStore(state => state.cart);
   const scrollRef = useContext(ScrollContext)?.scrollRef;
   const setIsScrolling = useContext(ScrollContext)?.setIsScrolling;
@@ -37,9 +38,9 @@ export const ListItems = ({canRemove=true, showQuantitySelector=true, children}:
           product={product}
           canRemove={canRemove} 
           showQuantitySelector={showQuantitySelector}
+          goToProduct={goToPeoduct}
         />
       ))}
-      
     </div>
   )
 }

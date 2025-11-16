@@ -11,6 +11,7 @@ import { saveAddressDB } from '@/app/actions/address/save-address';
 import { getAddress } from '@/app/actions/address/get-address';
 import { Address } from '@/interfaces/address-interface';
 import { removeAddress } from '@/app/actions/address/remove-address';
+import { useAddressStorage } from '@/store/address/address-store';
 
 interface Props {
     countries:Option[]
@@ -19,14 +20,12 @@ interface Props {
 export const AdressForm = ({countries}:Props) => {
     const [ rememberAddress, setRememberAddress ] = useState(false);
     const [ state, dispatch ] = useReducer(formReducer, initialState);
+    const { saveAdderessLS} = useAddressStorage(state => state);
     const openAlert = useAlertsStore(state => state.open);
     const router = useRouter();
     useLayoutEffect(() => {
         getAdderssFromDB();
     },[]);
-    useEffect(() => {
-        console.log(state)
-    },[state]);
 
     const getAdderssFromDB = async () => {
         let address: Address | null = await getAddress();
@@ -66,11 +65,11 @@ export const AdressForm = ({countries}:Props) => {
             const countryid = countries.find(country => country.value === state.values.country);
             await saveAddressDB(state.values, countryid!.id);
         }
+        saveAdderessLS(state.values);
         if(!rememberAddress) {
             clearInputs();
         }
-        console.log(state.values);
-        //return router.push('/checkout');
+        return router.push('/checkout');
     }
 
     const clearInput = (field:string) => {
@@ -86,7 +85,7 @@ export const AdressForm = ({countries}:Props) => {
         })
     }
     return (
-        <form className="grid grid-cols-1 gap-4 px-4 pb-10 sm:gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
+        <form className="grid grid-cols-1 mt-3 gap-4 px-4 pb-10 sm:gap-5 sm:grid-cols-2" onSubmit={handleSubmit}>
             <Input 
                 id='firstname' 
                 label='Nombres' 
@@ -214,13 +213,7 @@ export const AdressForm = ({countries}:Props) => {
                 />
                 <span>¿Recordar dirección?</span>
             </div>
-            <div className="flex flex-col-reverse pt-10 gap-5 mb-2 sm:flex-row sm:justify-end sm:col-span-2">
-                <Link
-                    href='/cart'
-                    className="py-2 px-4 bg-gray-100 rounded transition-all flex w-full justify-center hover:bg-gray-200 active:bg-gray-100 sm:w-1/5"
-                >
-                    Átras
-                </Link>
+            <div className="flex pt-10 gap-5 mb-2 sm:justify-end sm:col-span-2">
                 <button
                     type='submit'
                     className="btn-primary flex w-full cursor-pointer sm:w-1/5 justify-center "
