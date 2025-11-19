@@ -15,11 +15,25 @@ interface Props {
 
 export const OrderReview = ({showBtnAction=true, children}:Props) => {
     const [ showDetails, setShowDetails ] = useState(true);
+    const [ isPlacingOrder, setIsPlacingOrder ] = useState(false);
     const { address } = useAddressStorage(state => state);
-     const {getTotalProductsInCart, getSubTotal, getTaxis, getTotal} = useCartStore(state => state);
+    const cart = useCartStore(state => state.cart);
+    const {getTotalProductsInCart, getSubTotal, getTaxis, getTotal} = useCartStore(state => state);
     const { firstname, lastname, city, address:col, opAddress, phone } = address;
+
+    const onPlaceOrder = async () => {
+        setIsPlacingOrder(true);
+        const productToOrder = cart?.map(({id, size, quantity}) => ({id, size, quantity}))
+        // await new Promise(resolve => {
+        //     setTimeout(() => {
+        //         resolve(true);
+        //     },2000)
+        // });
+        console.log(address);
+        setIsPlacingOrder(false);
+    }
     return (
-        <BoxDetails link='/orders/123' showBtnAction={showBtnAction} textBtn="Pagar">
+        <BoxDetails disableBtnAction={isPlacingOrder} showBtnAction={showBtnAction} textBtn="Pagar" action={onPlaceOrder}>
             <div className={`transition-all duration-500 ease-in-out overflow-hidden
                 ${showDetails ? 'h-[202px]' : 'h-8'}
             `}>
@@ -55,6 +69,7 @@ export const OrderReview = ({showBtnAction=true, children}:Props) => {
                 <span className='font-bold'>{currencyFormat(getTotal())}</span>
             </div>
             {children}
+            {/* <p className="text-red-500">Error de creación</p> */}
         </BoxDetails>
     );
 }

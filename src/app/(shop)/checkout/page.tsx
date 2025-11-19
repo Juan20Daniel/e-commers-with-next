@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { ListItems } from "@/components/cart/list-items/ListItems";
 import { OrderReview } from "@/components/cart/order-review/OrderReview";
 import { Title } from "@/components";

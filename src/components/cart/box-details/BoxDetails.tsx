@@ -1,15 +1,23 @@
 'use client';
-import Link from 'next/link';
 import { titleFont } from '@/config/fonts';
+import clsx from 'clsx';
+import { useRouter } from 'next/navigation';
 
 interface Props {
-    link:string;
+    link?:string;
     children:React.ReactNode;
     textBtn: string;
     showBtnAction?:boolean;
+    disableBtnAction?: boolean;
+    action?:() => void;
 }
 
-export const BoxDetails = ({link, children, showBtnAction=true, textBtn}:Props) => {
+export const BoxDetails = ({link, children, showBtnAction=true, textBtn, disableBtnAction=false, action}:Props) => {
+    const router = useRouter();
+    const handleClick = () => {
+        if(link) return router.push(link);
+        if(action) action();
+    }
     return (
         <div className='sticky bottom-0 w-full bg-white shadow-[0px_-4px_8px_rgba(0,0,0,0.1)] py-4 flex justify-center 
             lg:bottom-auto lg:top-[150px] lg:mr-4 lg:shadow-[0px_1px_10px_rgba(0,0,0,0.1)] lg:rounded lg:max-w-[500px] lg:py-8
@@ -17,9 +25,15 @@ export const BoxDetails = ({link, children, showBtnAction=true, textBtn}:Props) 
             <div className='w-full max-w-[500px] px-4 lg:px-8'>
                 {children}
                 {showBtnAction &&
-                    <Link href={link} className={`${titleFont.className} flex justify-center btn-primary w-full text-white py-2 mb-12 rounded cursor-pointer active:bg-blue-300 transition-all lg:mb-0`}>
+                    <button 
+                        className={clsx({
+                            'btn-primary w-full': !disableBtnAction,
+                            'btn-disable w-full': disableBtnAction
+                        })}
+                        onClick={() => handleClick()}
+                    >
                         {textBtn}
-                    </Link>
+                    </button>
                 }
             </div>
         </div>
