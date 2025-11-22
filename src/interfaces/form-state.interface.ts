@@ -1,4 +1,4 @@
-import { Address } from "./address-interface";
+import { Address } from "./address.interface";
 
 export interface FormState {
     values: Address,

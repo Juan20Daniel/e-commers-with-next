@@ -1,4 +1,4 @@
-import { Address } from "@/interfaces/address-interface";
+import { Address } from "@/interfaces/address.interface";
 
 
 export type FormActionTypes =

@@ -9,7 +9,7 @@ import { Checkbox } from '@/components/ui/checkbox/Checkbox';
 import { useAlertsStore } from '@/store/ui/alerts-store';
 import { saveAddressDB } from '@/app/actions/address/save-address';
 import { getAddress } from '@/app/actions/address/get-address';
-import { Address } from '@/interfaces/address-interface';
+import { Address } from '@/interfaces/address.interface';
 import { removeAddress } from '@/app/actions/address/remove-address';
 import { useAddressStorage } from '@/store/address/address-store';
 

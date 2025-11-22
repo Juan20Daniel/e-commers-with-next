@@ -1,12 +1,13 @@
 'use client';
 import { titleFont } from "@/config/fonts";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IoChevronDownOutline } from "react-icons/io5";
 import { BoxDetails } from "../box-details/BoxDetails";
 import { OrderItem } from "../order-item/OrderItem";
 import { useAddressStorage } from "@/store/address/address-store";
 import { currencyFormat } from "@/utils/currencyFormat";
 import { useCartStore } from "@/store/cart/cart-store";
+import { placeOrder } from "@/app/actions/order/place-order";
 
 interface Props {
     showBtnAction?:boolean;
@@ -14,22 +15,28 @@ interface Props {
 }
 
 export const OrderReview = ({showBtnAction=true, children}:Props) => {
+    const [ quantityProducts, setCuantityProducts ] = useState(0);
+    const [ subTotal, setSubTotal ] = useState(0);
+    const [ taxis, setTaxis ] = useState(0);
+    const [ total, setTotal ] = useState(0);
     const [ showDetails, setShowDetails ] = useState(true);
     const [ isPlacingOrder, setIsPlacingOrder ] = useState(false);
     const { address } = useAddressStorage(state => state);
     const cart = useCartStore(state => state.cart);
     const {getTotalProductsInCart, getSubTotal, getTaxis, getTotal} = useCartStore(state => state);
     const { firstname, lastname, city, address:col, opAddress, phone } = address;
-
+    //Para evitar errores de hidratación
+    useEffect(() => {
+        setCuantityProducts(getTotalProductsInCart);
+        setSubTotal(getSubTotal());
+        setTaxis(getTaxis());
+        setTotal(getTotal());
+    },[]);
     const onPlaceOrder = async () => {
+        if(!cart) return;
         setIsPlacingOrder(true);
-        const productToOrder = cart?.map(({id, size, quantity}) => ({id, size, quantity}))
-        // await new Promise(resolve => {
-        //     setTimeout(() => {
-        //         resolve(true);
-        //     },2000)
-        // });
-        console.log(address);
+        const productToOrder = cart.map(({id, size, quantity}) => ({productId:id, size, quantity}))
+        await placeOrder(productToOrder, address);
         setIsPlacingOrder(false);
     }
     return (
@@ -57,16 +64,16 @@ export const OrderReview = ({showBtnAction=true, children}:Props) => {
             <OrderItem 
                 title="Nu. Productos" 
                 value={
-                    `${getTotalProductsInCart().toString()}
-                    ${getTotalProductsInCart() > 1 ? 'artículos' : 'artículo'}
+                    `${quantityProducts.toString()}
+                    ${quantityProducts > 1 ? 'artículos' : 'artículo'}
                     `
                 }
             />
-            <OrderItem title="Subtotal" value={currencyFormat(getSubTotal())}/>
-            <OrderItem title="Impuestos(15%)" value={currencyFormat(getTaxis())}/>
+            <OrderItem title="Subtotal" value={currencyFormat(subTotal)}/>
+            <OrderItem title="Impuestos(15%)" value={currencyFormat(taxis)}/>
             <div className='flex flex-row justify-between pb-3'>
                 <span className='font-bold'>Total</span>
-                <span className='font-bold'>{currencyFormat(getTotal())}</span>
+                <span className='font-bold'>{currencyFormat(total)}</span>
             </div>
             {children}
             {/* <p className="text-red-500">Error de creación</p> */}
