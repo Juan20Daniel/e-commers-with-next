@@ -11,7 +11,6 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 enum Size {
@@ -110,7 +109,7 @@ model Order {
   tax         Float
   total       Float
   itemInOrder Int
-  isPaid      Boolean
+  isPaid      Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -127,8 +126,8 @@ model OrderItems {
   price    Float
   size     Size
 
-  order   Order  @relation(fields: [orderId], references: [id])
-  orderId String
+  order   Order  @relation(fields: [orderId2], references: [id])
+  orderId2 String
 
   product   Product @relation(fields: [productId], references: [id])
   productId String
@@ -144,8 +143,8 @@ model OrderAddress {
   city       String
   phone      String
 
-  order   Order  @relation(fields: [orderId], references: [id])
-  orderId String @unique
+  order   Order  @relation(fields: [orderId3], references: [id])
+  orderId3 String @unique
 
   country   Countries @relation(fields: [countryId], references: [id])
   countryId String
