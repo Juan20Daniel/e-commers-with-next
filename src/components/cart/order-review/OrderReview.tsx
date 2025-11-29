@@ -16,15 +16,16 @@ interface Props {
 
 export const OrderReview = ({showBtnAction=true, children}:Props) => {
     const [ quantityProducts, setCuantityProducts ] = useState(0);
+    const [ errorMessage, setErrorMessage ] = useState('');
     const [ subTotal, setSubTotal ] = useState(0);
     const [ taxis, setTaxis ] = useState(0);
     const [ total, setTotal ] = useState(0);
     const [ showDetails, setShowDetails ] = useState(true);
     const [ isPlacingOrder, setIsPlacingOrder ] = useState(false);
-    const { address } = useAddressStorage(state => state);
-    const cart = useCartStore(state => state.cart);
     const {getTotalProductsInCart, getSubTotal, getTaxis, getTotal} = useCartStore(state => state);
+    const { address } = useAddressStorage(state => state);
     const { firstname, lastname, city, address:col, opAddress, phone } = address;
+    const cart = useCartStore(state => state.cart);
     //Para evitar errores de hidratación
     useEffect(() => {
         setCuantityProducts(getTotalProductsInCart);
@@ -36,8 +37,14 @@ export const OrderReview = ({showBtnAction=true, children}:Props) => {
         if(!cart) return;
         setIsPlacingOrder(true);
         const productToOrder = cart.map(({id, size, quantity}) => ({productId:id, size, quantity}))
-        await placeOrder(productToOrder, address);
-        setIsPlacingOrder(false);
+        const result = await placeOrder(productToOrder, address);
+        if(!result.ok) {
+            setIsPlacingOrder(false);
+            setErrorMessage(result.message);
+            return;
+        }
+
+        setErrorMessage('');
     }
     return (
         <BoxDetails disableBtnAction={isPlacingOrder} showBtnAction={showBtnAction} textBtn="Pagar" action={onPlaceOrder}>
@@ -76,7 +83,7 @@ export const OrderReview = ({showBtnAction=true, children}:Props) => {
                 <span className='font-bold'>{currencyFormat(total)}</span>
             </div>
             {children}
-            {/* <p className="text-red-500">Error de creación</p> */}
+            {errorMessage && <p className="text-red-500">{errorMessage}</p>}
         </BoxDetails>
     );
 }

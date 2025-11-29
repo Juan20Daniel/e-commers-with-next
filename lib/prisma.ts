@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { PrismaClient } from '../src/app/generated/prisma';
 import { withAccelerate } from '@prisma/extension-accelerate';
 import { PrismaPg } from '@prisma/adapter-pg';

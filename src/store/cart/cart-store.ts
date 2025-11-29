@@ -15,6 +15,7 @@ interface InitialState {
     getSubTotal: () => number;
     getTaxis: () => number;
     getTotal:() => number;
+    clearCart: () => void;
 }
 
 export const useCartStore = create<InitialState>()(
@@ -84,6 +85,9 @@ export const useCartStore = create<InitialState>()(
             getTotal:() => {
                 const {getSubTotal, getTaxis} = get();
                 return getSubTotal()+getTaxis();
+            },
+            clearCart:() => {
+                set({cart:null});
             }
         }),
         {

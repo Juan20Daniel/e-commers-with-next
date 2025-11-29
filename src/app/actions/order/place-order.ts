@@ -36,19 +36,83 @@ export const placeOrder = async (productToOrder: ProductToOrder[], address: Addr
         totals.total += subTotal*1.15;
         return totals;
     }, {subTotal:0, tax:0, total:0});
-    console.log(totals);
 
-    const prismaTransaction = await prisma.$transaction( async (tr) => {
-        // const order = await tr.order.create({
-        //     data: {
-        //         userId: session.user.id,
-        //         subTotal:totals.subTotal,
-        //         tax: totals.tax,
-        //         total: totals.total,
-        //         itemInOrder: productsInOrder,
+    try {
+        const prismaTransaction = await prisma.$transaction( async (tr) => {
+            const updateProductsDBPromises = productInStockDB.map(productDB => {
+                const reagroupProductsInOrder = productToOrder
+                .filter(p => p.productId === productDB.id)
+                .reduce((acc, currentItem) => currentItem.quantity+acc, 0);
 
-        //     }
-        // })
-    })
-    // console.log({productToOrder, address, userId:session.user.id})
+                if(reagroupProductsInOrder === 0) {
+                    throw new Error(`${productDB.id}, no tiene cantidad definida`);
+                }
+
+                return tr.product.update({
+                    where: {id: productDB.id},
+                    data: {
+                        inStock: {
+                            decrement: reagroupProductsInOrder
+                        }
+                    }
+                })
+            });
+
+            const updateProducts = await Promise.all(updateProductsDBPromises);
+            
+            updateProducts.forEach(productDB => {
+                if(productDB.inStock < 0) {
+                    throw new Error(`${productDB.title} 'no hay suficientes productos en stock en este momento para satisfacer su compra, intente mas tarde.'`)
+                }
+            });
+            const order = await tr.order.create({
+                data: {
+                    userId: session.user.id,
+                    subTotal:totals.subTotal,
+                    tax: totals.tax,
+                    total: totals.total,
+                    itemInOrder: productsInOrder,
+                    order: {
+                        createMany: {
+                            data: productToOrder.map(p => ({
+                                quantity: p.quantity,
+                                price: productInStockDB.find(productDB => productDB.id === p.productId)?.price??0,
+                                size: p.size,
+                                productId: p.productId
+                            }))
+                        }
+                    }
+                }
+            });
+
+            const countryDB = await tr.countries.findFirst({
+                where: {name:address.country}
+            });
+
+            const {country, ...restAddress} = address;
+            const saveOrderAddress = await tr.orderAddress.create({
+                data: {
+                    ...restAddress,
+                    countryId: countryDB?.id!,
+                    orderId3: order.id
+                }
+            });
+            return {
+                order:order,
+                updateProducts: updateProducts,
+                orderAddress: saveOrderAddress
+            }
+        });
+        return {
+            ok:true,
+            order: prismaTransaction.order,
+            prismaTransaction: prismaTransaction,
+        }
+    } catch (error:any) {
+        return {
+            ok:false,
+            message: error?.message
+        }
+    }
+   
 }
