@@ -13,6 +13,12 @@ interface ProductToOrder {
 }
 
 export const placeOrder = async (productToOrder: ProductToOrder[], address: Address) => {
+    if(productToOrder.length === 0) {
+        return {
+            ok:false,
+            message: 'El carrito esta vacío'
+        }
+    }
     const session = await auth();
     if(!session?.user) {
         return {

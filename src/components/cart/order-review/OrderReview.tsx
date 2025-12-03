@@ -8,6 +8,7 @@ import { useAddressStorage } from "@/store/address/address-store";
 import { currencyFormat } from "@/utils/currencyFormat";
 import { useCartStore } from "@/store/cart/cart-store";
 import { placeOrder } from "@/app/actions/order/place-order";
+import { useRouter } from "next/navigation";
 
 interface Props {
     showBtnAction?:boolean;
@@ -22,10 +23,10 @@ export const OrderReview = ({showBtnAction=true, children}:Props) => {
     const [ total, setTotal ] = useState(0);
     const [ showDetails, setShowDetails ] = useState(true);
     const [ isPlacingOrder, setIsPlacingOrder ] = useState(false);
-    const {getTotalProductsInCart, getSubTotal, getTaxis, getTotal} = useCartStore(state => state);
+    const { cart, getTotalProductsInCart, getSubTotal, getTaxis, getTotal, clearCart} = useCartStore(state => state);
     const { address } = useAddressStorage(state => state);
     const { firstname, lastname, city, address:col, opAddress, phone } = address;
-    const cart = useCartStore(state => state.cart);
+    const router = useRouter();
     //Para evitar errores de hidratación
     useEffect(() => {
         setCuantityProducts(getTotalProductsInCart);
@@ -43,8 +44,9 @@ export const OrderReview = ({showBtnAction=true, children}:Props) => {
             setErrorMessage(result.message);
             return;
         }
-
+        clearCart();
         setErrorMessage('');
+        router.replace('/orders/'+ result.order?.id)
     }
     return (
         <BoxDetails disableBtnAction={isPlacingOrder} showBtnAction={showBtnAction} textBtn="Pagar" action={onPlaceOrder}>

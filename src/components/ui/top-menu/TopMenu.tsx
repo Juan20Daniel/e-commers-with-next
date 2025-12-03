@@ -18,12 +18,12 @@ export const TopMenu = () => {
   },[])
   return (
     <nav className={`${isScrolling ? "border-gray-200" : "border-white"} border-b flex px-5 pt-2 justify-between h-[60px] items-center w-full sticky top-0 bg-white z-2`}>
-      <div>
-        <Link href="/">
-          <span className={`${titleFont.className} antialiased font-bold`}>Teslo</span>
-          <span> | Shop</span>
-        </Link>
-      </div>
+    
+      <Link href="/">
+        <span className={`${titleFont.className} antialiased font-bold`}>Teslo</span>
+        <span> | Shop</span>
+      </Link>
+      
       <div className='hidden sm:block'>
         <GenderOption text='Hombres' gender='men' />
         <GenderOption text='Mujeres' gender='women' />

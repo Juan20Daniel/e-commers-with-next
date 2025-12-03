@@ -87,7 +87,7 @@ export const useCartStore = create<InitialState>()(
                 return getSubTotal()+getTaxis();
             },
             clearCart:() => {
-                set({cart:null});
+                set({cart:[]});
             }
         }),
         {
