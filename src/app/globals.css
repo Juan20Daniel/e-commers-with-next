@@ -7,6 +7,13 @@
   --background-end-rgb: 255, 255, 255;
 }
 
+@theme {
+  --breakpoint-xs: 430px;
+  --breakpoint-sm: 640px;
+  --breakpoint-sm2: 700px;
+  --breakpoint-md2: 900px;
+}
+
 body {
   color: rgb(var(--foreground-rgb));
   background: white
